@@ -2634,63 +2634,21 @@
     <script>
         const pages = ['home', 'buy', 'sell', 'recovery', 'reviews', 'connect'];
 
-        function showPage(id, pushState = true) {
-            if (!pages.includes(id)) id = 'home';
-            
-            if (pushState) {
-                const newPath = id === 'home' ? '/' : '/' + (id === 'connect' ? 'connectwithus' : id);
-                window.history.pushState({ page: id }, '', newPath);
-            }
-
+        function showPage(id) {
             pages.forEach(p => {
-                const pageEl = document.getElementById('page-' + p);
-                if(pageEl) pageEl.classList.remove('active');
+                document.getElementById('page-' + p).classList.remove('active');
                 const navEl = document.getElementById('nav-' + p);
                 const mnavEl = document.getElementById('mnav-' + p);
                 if (navEl) navEl.classList.remove('active');
                 if (mnavEl) mnavEl.classList.remove('active');
             });
-            
-            const targetPage = document.getElementById('page-' + id);
-            if(targetPage) targetPage.classList.add('active');
+            document.getElementById('page-' + id).classList.add('active');
             const navEl = document.getElementById('nav-' + id);
             const mnavEl = document.getElementById('mnav-' + id);
             if (navEl) navEl.classList.add('active');
             if (mnavEl) mnavEl.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function renderPage() {
-            let path = window.location.pathname.substring(1).replace(/\/$/, "");
-            let id = path || 'home';
-            
-            if (window.location.hash) {
-                id = window.location.hash.substring(1);
-            }
-            
-            if (id.includes('index.html')) id = 'home';
-
-            if (id === 'connectwithus' || id === 'connetwithus') {
-                id = 'connect';
-            }
-
-            if (!pages.includes(id)) {
-                id = 'home';
-            }
-            showPage(id, false);
-        }
-
-        window.addEventListener('popstate', (e) => {
-            if (e.state && e.state.page) {
-                showPage(e.state.page, false);
-            } else {
-                renderPage();
-            }
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderPage();
-        });
 
         function toggleMenu() {
             document.getElementById('mobileMenu').classList.toggle('open');
