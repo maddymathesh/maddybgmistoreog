@@ -27,6 +27,19 @@ export const config = [
     },
   },
   {
+    rules: {
+      // Allow _-prefixed identifiers as conventional "intentionally unused" marker
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_"
+        }
+      ],
+    },
+  },
+  {
     ignores: ["dist/**"],
   },
 ];

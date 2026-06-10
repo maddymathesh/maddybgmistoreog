@@ -1,0 +1,271 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @next/next/no-img-element */
+"use client";
+
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { 
+  Search, Lock, CheckCircle, ShoppingBag, Banknote, 
+  ShoppingCart, Play, Send 
+} from "lucide-react";
+import SkeletonLoader from "../../components/SkeletonLoader";
+import { getProducts } from "../actions";
+
+// YouTube embed helper
+function getEmbed(url: string | null) {
+  if (!url) return null;
+  if (url.includes("youtube.com/embed/")) return url;
+  const s = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (s) return `https://www.youtube-nocookie.com/embed/${s[1]}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${s[1]}`;
+  const w = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if (w) return `https://www.youtube-nocookie.com/embed/${w[1]}?autoplay=1&mute=1&playsinline=1&loop=1&playlist/${w[1]}`;
+  return null;
+}
+
+const WaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+function LoginBadge({ type }: { type: string }) {
+  const t = (type || "").toLowerCase();
+  let icon = "G", color = "#4285F4", bg = "rgba(66,133,244,0.1)";
+  if (t.includes("facebook") || t === "fb") { icon = "f"; color = "#4A9FFF"; bg = "rgba(24,119,242,0.1)"; }
+  else if (t.includes("twitter") || t === "x") { icon = "𝕏"; color = "#fff"; bg = "rgba(255,255,255,0.05)"; }
+  else if (t.includes("apple")) { icon = ""; color = "#fff"; bg = "rgba(255,255,255,0.05)"; }
+  else if (t.includes("google") || t.includes("playgames")) { icon = "G"; color = "#4285F4"; bg = "rgba(66,133,244,0.1)"; }
+  else if (t.includes("whats app") || t.includes("whatsapp")) { icon = "W"; color = "#25D366"; bg = "rgba(37,211,102,0.1)"; }
+
+  return (
+    <span className="login-badge" style={{ color, background: bg, border: `1px solid ${color}33` }}>
+      {icon} {type}
+    </span>
+  );
+}
+
+interface Product {
+  id: string;
+  title: string;
+  description: string | null;
+  price: string;
+  category: string;
+  status: string;
+  youtubeUrl: string | null;
+  primaryLogin: string | null;
+  secondaryLogin: string | null;
+  unlinkGuarantee: string;
+  tag: string;
+  imageUrls: string[] | null;
+  createdAt: Date;
+}
+
+function StockCard({ stock }: { stock: Product }) {
+  const { isSignedIn } = useUser();
+  const embed = getEmbed(stock.youtubeUrl);
+  const primaryLogin = stock.primaryLogin;
+  const secondaryLogin = stock.secondaryLogin;
+  const guarantee = stock.unlinkGuarantee || "Safe & Secured";
+  const wa = `https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20want%20to%20buy%20this%20account%20listed%20for%20₹${stock.price}.%20${encodeURIComponent(stock.title)}`;
+
+  return (
+    <div className="premium-card">
+      <div className="card-video-wrap">
+        {embed ? (
+          <iframe 
+            src={embed} 
+            title="Preview" 
+            loading="lazy" 
+            allow="autoplay; encrypted-media" 
+            allowFullScreen 
+            className="card-iframe" 
+          />
+        ) : (
+          <div className="no-video"><Play size={40} /></div>
+        )}
+        <div className="card-tier-badge">{stock.category || "Premium"}</div>
+        {stock.status && stock.status !== 'available' && (
+          <div className={`card-status-badge ${stock.status}`}>{stock.status}</div>
+        )}
+      </div>
+
+      <div className="card-body">
+        <h3 className="card-title">{stock.title}</h3>
+        
+        <div className="card-badges-row">
+          {primaryLogin && <LoginBadge type={primaryLogin} />}
+          {secondaryLogin && <LoginBadge type={secondaryLogin} />}
+          <span className="guarantee-badge">
+            <CheckCircle size={12} /> {guarantee}
+          </span>
+        </div>
+
+        <p className="card-desc">{stock.description}</p>
+
+        <div className="card-footer">
+          {isSignedIn ? (
+            <>
+              <div className="card-price-wrap">
+                <span className="price-label">LISTING PRICE</span>
+                <span className="price-val">₹{Number(stock.price).toLocaleString("en-IN")}</span>
+              </div>
+              <div className="card-actions">
+                <a href={wa} target="_blank" rel="noreferrer" className="action-btn wa"><WaIcon /> <span>WhatsApp</span></a>
+                <a href="https://t.me/MBSxMADDY17" target="_blank" rel="noreferrer" className="action-btn tg"><Send size={16} /> <span>Telegram</span></a>
+              </div>
+            </>
+          ) : (
+            <Link href="/login" className="login-to-view">
+              <Lock size={14} /> Login to see price & contact
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ReadyStocks() {
+  const [stocks, setStocks] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+  const [status, setStatus] = useState("all");
+
+  useEffect(() => {
+    getProducts().then((res) => {
+      if (res.success && res.products) {
+        setStocks(res.products as any);
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  const filtered = stocks.filter(s => {
+    const mSearch = !search || s.title?.toLowerCase().includes(search.toLowerCase()) || s.description?.toLowerCase().includes(search.toLowerCase());
+    const mCat = category === "all" || s.category?.toLowerCase() === category.toLowerCase();
+    const mStat = status === "all" || s.status === status;
+    return mSearch && mCat && mStat;
+  });
+
+  return (
+    <>
+      <div className="rs-page">
+        <section className="rs-hero">
+          <img src="/readystocks-banner.jpg" alt="BGMI Ready Stocks Account Listings" className="hero-bg" />
+          <div className="hero-content">
+            <h1 className="text-3xl sm:text-5xl font-black font-h uppercase leading-none text-white">
+              Ready To Play <br/><span className="g">Accounts</span>
+            </h1>
+            <p className="text-muted text-xs sm:text-sm uppercase font-bold tracking-widest mt-3">
+              Explore Premium BGMI IDs handpicked for elite gamers.
+            </p>
+          </div>
+        </section>
+
+        <div className="rs-container">
+          <div className="filter-bar sticky">
+            <div className="search-box">
+              <Search size={18} />
+              <input type="text" placeholder="Search accounts..." value={search} onChange={e => setSearch(e.target.value)} />
+            </div>
+            <div className="select-group">
+              <select value={category} onChange={e => setCategory(e.target.value)}>
+                <option value="all">All Tiers</option>
+                <option value="Budget">Budget</option>
+                <option value="Mid Range">Mid Range</option>
+                <option value="Premium">Premium</option>
+                <option value="Ultra Premium">Ultra Premium</option>
+              </select>
+              <select value={status} onChange={e => setStatus(e.target.value)}>
+                <option value="all">All Status</option>
+                <option value="available">Available</option>
+                <option value="sold">Sold</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="stocks-grid">
+            {loading ? (
+              Array(6).fill(0).map((_, idx) => <SkeletonLoader key={idx} />)
+            ) : filtered.length > 0 ? (
+              filtered.map(stock => <StockCard key={stock.id} stock={stock} />)
+            ) : (
+              <div className="no-results">No accounts found matching your criteria.</div>
+            )}
+          </div>
+        </div>
+
+        <style>{`
+          .rs-page { background: var(--color-bg); color: #fff; min-height: 100vh; }
+          .rs-hero { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+          .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; background-position: top; background-size: cover; object-fit: cover; filter: brightness(0.25); }
+          .hero-content { position: relative; z-index: 2; text-align: center; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 30px; background-color: rgba(17, 21, 32, 0.4); border: 1px solid var(--color-border-gold); border-radius: 24px; }
+          
+          .rs-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+          
+          .filter-bar { 
+            background: rgba(17, 21, 32, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 15px; border-radius: 16px; border: 1px solid var(--color-border-gold);
+            display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;
+            z-index: 10;
+          }
+          .filter-bar.sticky { position: sticky; top: 80px; }
+          .search-box { flex: 1; min-width: 240px; background: rgba(255,255,255,0.03); border-radius: 10px; display: flex; align-items: center; padding: 0 15px; color: var(--color-gold); border: 1px solid rgba(255,255,255,0.05); }
+          .search-box input { background: none; border: none; padding: 12px; color: #fff; width: 100%; outline: none; font-size: 14px; }
+          .select-group { display: flex; gap: 10px; }
+          .filter-bar select { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.05); padding: 12px 20px; border-radius: 10px; outline: none; cursor: pointer; font-size: 14px; }
+          .filter-bar select option { background: #111520; color: #fff; }
+
+          .stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
+          
+          .premium-card { 
+            background: var(--color-card); border: 1px solid var(--color-border-gold); 
+            border-radius: 20px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+          }
+          .premium-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: var(--color-gold); }
+          
+          .card-video-wrap { position: relative; padding-top: 56.25%; background: #000; border-bottom: 1px solid var(--color-border); }
+          .card-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+          .no-video { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.02); }
+          .card-tier-badge { position: absolute; top: 15px; left: 15px; background: var(--color-gold); color: #000; font-weight: 850; font-size: 10px; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-h); }
+          .card-status-badge { position: absolute; top: 15px; right: 15px; padding: 4px 12px; border-radius: 100px; font-size: 10px; font-weight: 850; text-transform: uppercase; font-family: var(--font-h); }
+          .card-status-badge.sold { background: var(--color-red); color: #fff; }
+          .card-status-badge.available { background: var(--color-green); color: #fff; }
+
+          .card-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+          .card-title { font-size: 16px; font-family: var(--font-h); font-weight: 700; margin-bottom: 15px; color: #fff; line-height: 1.4; height: 45px; overflow: hidden; }
+          .card-badges-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+          .login-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+          .guarantee-badge { border: 1px solid rgba(255,215,0,0.2); background: rgba(255,215,0,0.05); color: var(--color-gold); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+          
+          .card-desc { font-size: 13px; color: var(--color-muted); line-height: 1.6; margin-bottom: 25px; height: 80px; overflow-y: auto; scrollbar-width: none; white-space: pre-line; }
+          
+          .card-footer { border-top: 1px solid var(--color-border); padding-top: 20px; margin-top: auto; }
+          .card-price-wrap { display: flex; flex-direction: column; margin-bottom: 15px; }
+          .price-label { font-size: 10px; color: var(--color-muted); letter-spacing: 1px; }
+          .price-val { font-size: 28px; font-family: var(--font-h); font-weight: 900; color: var(--color-gold); }
+          
+          .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+          .action-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none; color: #fff; transition: transform 0.2s; }
+          .action-btn:hover { transform: scale(1.04); }
+          .action-btn.wa { background: #25D366; }
+          .action-btn.tg { background: #229ED9; }
+          
+          .login-to-view { width: 100%; padding: 15px; background: var(--color-gold-dim); border: 1px solid var(--color-border-gold); color: var(--color-gold); border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; }
+          .login-to-view:hover { background: rgba(255, 215, 0, 0.12); }
+          
+          .no-results { grid-column: 1/-1; text-align: center; padding: 80px; color: var(--color-muted); font-size: 18px; }
+
+          @media (max-width: 768px) {
+            .filter-bar { position: static; }
+            .select-group { width: 100%; }
+            .select-group select { flex: 1; }
+            .rs-hero { height: 40vh; }
+          }
+        `}</style>
+      </div>
+    </>
+  );
+}

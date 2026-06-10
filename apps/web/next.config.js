@@ -1,4 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import { withSentryConfig } from "@sentry/nextjs";
 
-export default nextConfig;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  turbopack: {},
+};
+
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  org: "maddy-bgmi-store",
+  project: "web-store",
+});
