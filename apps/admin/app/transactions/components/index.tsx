@@ -33,7 +33,9 @@ import {
   Menu,
   X,
   ShieldAlert,
-  Loader2
+  Loader2,
+  LayoutDashboard,
+  Receipt
 } from 'lucide-react';
 
 const SIDEBAR_ITEMS = [
@@ -76,7 +78,7 @@ export default function TransactionsLayout() {
   }
 
   const isPermanentAdmin = user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com";
-  const userRole = (user?.publicMetadata?.role as string) || "USER";
+  const userRole = String((user?.publicMetadata as Record<string, unknown> | undefined)?.role || "USER");
   const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER", "CONTENT_MANAGER"].includes(userRole);
 
   if (!isAdmin) {
