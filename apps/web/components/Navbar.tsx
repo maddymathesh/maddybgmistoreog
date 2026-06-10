@@ -38,14 +38,14 @@ const navLinks = [
 ];
 
 const tickerItems = [
-  "Safe & Verified Accounts",
-  "2000+ Happy Buyers",
-  "₹60 Lakhs+ Worth Sold",
-  "Secure Single Logins",
-  "UPI · Bank · USDT · Cash",
-  "Trusted Since 2019",
-  "Budget to Premium Range",
-  "Face-to-Face Deals Available",
+  { text: "Safe & Verified Accounts", emoji: "🛡️" },
+  { text: "2000+ Happy Buyers", emoji: "👑" },
+  { text: "₹60 Lakhs+ Worth Sold", emoji: "💰" },
+  { text: "Secure Single Logins", emoji: "🔒" },
+  { text: "UPI · Bank · USDT · Cash", emoji: "💳" },
+  { text: "Trusted Since 2019", emoji: "🌟" },
+  { text: "Budget to Premium Range", emoji: "⚡" },
+  { text: "Face-to-Face Deals Available", emoji: "🤝" },
 ];
 
 export default function Navbar() {
@@ -127,16 +127,18 @@ export default function Navbar() {
         {/* Desktop Links */}
         <ul className="hidden lg:flex items-center gap-1.5 list-none m-0 p-0">
           {navLinks.map((l) => (
-            <li key={l.label || l.to} className="relative group/nav">
+            <li key={l.label || l.to} className="relative group/nav py-3">
               {l.subLinks ? (
-                <div className={`${deskLinkStyle} group-hover/nav:text-gold`}>
-                  {l.label}{" "}
-                  <ChevronDown
-                    size={13}
-                    className="ml-1 flex-shrink-0 transition-transform group-hover/nav:rotate-180"
-                  />
+                <>
+                  <div className={`${deskLinkStyle} group-hover/nav:text-gold`}>
+                    {l.label}{" "}
+                    <ChevronDown
+                      size={13}
+                      className="ml-1 flex-shrink-0 transition-transform group-hover/nav:rotate-180"
+                    />
+                  </div>
                   {/* Dropdown Menu */}
-                  <div className="absolute top-full left-0 hidden group-hover/nav:block bg-[#111520] border border-border-gold rounded-xl py-2 min-w-[200px] shadow-2xl animate-fade-in">
+                  <div className="absolute top-full left-0 hidden group-hover/nav:block bg-[#111520] border border-[var(--color-border-gold)] rounded-xl py-2 min-w-[200px] shadow-2xl animate-fade-in before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 mt-1 z-50">
                     {l.subLinks.map((s) => (
                       <Link
                         key={s.to}
@@ -149,7 +151,7 @@ export default function Navbar() {
                       </Link>
                     ))}
                   </div>
-                </div>
+                </>
               ) : (
                 <Link
                   href={l.to}
@@ -164,11 +166,11 @@ export default function Navbar() {
           ))}
 
           {isAdmin && (
-            <li className="relative group/adminNav">
+            <li className="relative group/adminNav py-3">
               <div className={`${deskLinkStyle} text-gold group-hover/adminNav:text-gold`}>
                 Manage <ChevronDown size={13} className="ml-1 transition-transform group-hover/adminNav:rotate-180" />
               </div>
-              <div className="absolute top-full right-0 hidden group-hover/adminNav:block bg-[#111520] border border-[var(--color-border-gold)] rounded-xl py-2 min-w-[200px] shadow-2xl animate-fade-in mt-1">
+              <div className="absolute top-full right-0 hidden group-hover/adminNav:block bg-[#111520] border border-[var(--color-border-gold)] rounded-xl py-2 min-w-[200px] shadow-2xl animate-fade-in before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 mt-1 z-50">
                 <a
                   href={process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.maddybgmistore.in"}
                   target="_blank"
@@ -238,6 +240,18 @@ export default function Navbar() {
           )}
         </button>
       </nav>
+
+      {/* ── Scrolling Ticker Banner ── */}
+      <div className="h-[28px] bg-black/40 border-t border-white/5 overflow-hidden relative flex items-center">
+        <div className="flex whitespace-nowrap items-center text-[10px] font-bold text-gold tracking-[1.5px] uppercase animate-ticker">
+          {doubled.map((item, i) => (
+            <span key={i} className="inline-flex items-center gap-2 mr-16">
+              <span className="text-[12px]">{item.emoji}</span>
+              <span>{item.text}</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
 
       {/* ── Mobile Overlay Backdrop ── */}
@@ -363,9 +377,13 @@ export default function Navbar() {
       </div>
 
       <style>{`
+        .animate-ticker {
+          display: inline-flex;
+          animation: ticker 35s linear infinite;
+        }
         @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
         }
       `}</style>
     </header>

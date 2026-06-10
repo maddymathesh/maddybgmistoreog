@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  AlertTriangle, CheckCircle2, Info, Clock, CreditCard, Lock, ShieldCheck,
-  ChevronDown, ChevronUp, Banknote, ArrowRight, Wallet, Check, ChevronRight
+  AlertTriangle, CheckCircle2, Clock, Lock, ShieldCheck,
+  ChevronDown, ChevronUp, Banknote, Wallet, Check,
+  Globe
 } from "lucide-react";
 
 export default function BookingSystem() {

@@ -108,7 +108,7 @@ const CountUp = memo(function CountUp({
     return () => unsubscribe();
   }, [springValue, formatValue]);
 
-  return <span className={className} ref={ref} />;
+  return <span className={className} ref={ref}>{to}</span>;
 });
 
 export default CountUp;

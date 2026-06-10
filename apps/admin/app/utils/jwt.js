@@ -34,7 +34,7 @@ export async function verifyPaymentJWT(jwt, secretPin) {
 export function decodeJWT(jwt) {
     try {
         return jose.decodeJwt(jwt);
-    } catch (err) {
+    } catch (_err) {
         return null;
     }
 }

@@ -1,3 +1,4 @@
+/* global process */
 /**
  * Generic API layer for interacting with Google Apps Script Web App.
  * Handles fetching, inserting, updating, and deleting data from Google Sheets.

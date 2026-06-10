@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Lock, Link as LinkIcon, CheckCircle2, ShieldAlert, Check, RefreshCw } from "lucide-react";
+import { ArrowLeft, Lock, Link as LinkIcon, CheckCircle2, ShieldAlert, RefreshCw } from "lucide-react";
 
 export default function UnlinkingGuide() {
   return (
@@ -12,7 +12,7 @@ export default function UnlinkingGuide() {
         position: "relative", width: "100%",
         paddingTop: "120px", paddingBottom: "60px",
         display: "flex", alignItems: "center", justifyItems: "center",
-        flexDirection: "column", textAlign: "center", px: "5%"
+        flexDirection: "column", textAlign: "center", paddingLeft: "5%", paddingRight: "5%"
       }}>
         <div className="absolute inset-0 bg-gradient-to-b from-[#000511] via-[#080a0f] to-[#080a0f] z-0" />
 

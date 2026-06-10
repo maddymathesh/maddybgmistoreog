@@ -4,7 +4,7 @@ import { useState } from "react";
 import { 
   ShieldCheck, Shield, CheckCircle2, MessageCircle, Send, Gamepad2, 
   Users, Check, Lock, Star, Youtube, Twitch, Trophy, AlertCircle, ChevronDown, Link as LinkIcon,
-  Smartphone, Key, XCircle, AlertTriangle, UserCheck, ShieldAlert, CreditCard, Play, Briefcase, FileText, ChevronUp
+  AlertTriangle, UserCheck, CreditCard, FileText, ChevronUp
 } from "lucide-react";
 
 export default function EscrowDeal() {
@@ -41,7 +41,7 @@ export default function EscrowDeal() {
         position: "relative", width: "100%",
         paddingTop: "120px", paddingBottom: "60px",
         display: "flex", alignItems: "center", justifyContent: "center",
-        flexDirection: "column", textAlign: "center", px: "5%"
+        flexDirection: "column", textAlign: "center", paddingLeft: "5%", paddingRight: "5%"
       }}>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0600] via-[#080a0f] to-[#080a0f] z-0" />
 

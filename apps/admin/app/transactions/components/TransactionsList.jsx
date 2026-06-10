@@ -15,6 +15,7 @@ import { fetchAllTransactions, deleteTransaction } from '../../services/transact
 import { toast } from 'sonner';
 import { exportToExcel } from '../../lib/excelExport';
 import { generateCustomerPDF, generateInternalPDF, testPDF } from '../../lib/pdfGenerator';
+import { Dropdown } from '@repo/ui/dropdown';
 
 export default function TransactionsList({ onAddNew }) {
   const [data, setData] = useState([]);
@@ -22,7 +23,6 @@ export default function TransactionsList({ onAddNew }) {
   const [typeFilter, setTypeFilter] = useState('All');
   const [isLoading, setIsLoading] = useState(true);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [showVisibilityDropdown, setShowVisibilityDropdown] = useState(false);
   const [includePrintDate, setIncludePrintDate] = useState(true);
   const [selectedTxForDetails, setSelectedTxForDetails] = useState(null);
 
@@ -273,31 +273,30 @@ export default function TransactionsList({ onAddNew }) {
             <span className={includePrintDate ? 'text-white' : ''}>Print Date Footer</span>
           </label>
 
-          <div className="relative">
-            <button
-              onClick={() => setShowVisibilityDropdown(!showVisibilityDropdown)}
-              className="btn btn-outline border-[var(--color-border-gold)] text-[var(--color-gold)] px-4 py-2.5 text-[12px] hover:bg-[var(--color-gold-dim)] h-[38px]"
-            >
-              <Eye size={16} /> Visibility
-            </button>
-            {showVisibilityDropdown && (
-              <div className="absolute top-[calc(100%+8px)] right-0 bg-[var(--color-card)] border border-[var(--color-border-gold)] rounded-xl z-50 py-2 min-w-[180px] shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                {table.getAllLeafColumns().map(column => {
-                  return (
-                    <label key={column.id} className="flex items-center gap-3 px-4 py-2 text-[12.5px] cursor-pointer text-white hover:bg-white/5 transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={column.getIsVisible()}
-                        onChange={column.getToggleVisibilityHandler()}
-                        className="accent-[var(--color-gold)] w-3.5 h-3.5 cursor-pointer"
-                      />
-                      {column.id === 'transaction_id' ? 'Tx ID' : column.id === 'transaction_type' ? 'Type' : column.id === 'transaction_date' ? 'Date' : column.id === 'sold_price' ? 'Amount' : column.id === 'buyer_phone' ? 'Customer Phone' : column.id === 'payment_status' ? 'Status' : column.id === 'actions' ? 'Actions' : column.id}
-                    </label>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          <Dropdown
+            align="right"
+            label={
+              <span className="flex items-center gap-2">
+                <Eye size={16} /> Visibility
+              </span>
+            }
+            buttonClassName="btn btn-outline border-[var(--color-border-gold)] text-[var(--color-gold)] px-4 py-2.5 text-[12px] hover:bg-[var(--color-gold-dim)] h-[38px] inline-flex items-center gap-2"
+            panelClassName="absolute top-[calc(100%+8px)] right-0 bg-[var(--color-card)] border border-[var(--color-border-gold)] rounded-xl z-50 py-2 min-w-[180px] shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+          >
+            {table.getAllLeafColumns().map(column => {
+              return (
+                <label key={column.id} className="flex items-center gap-3 px-4 py-2 text-[12.5px] cursor-pointer text-white hover:bg-white/5 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={column.getIsVisible()}
+                    onChange={column.getToggleVisibilityHandler()}
+                    className="accent-[var(--color-gold)] w-3.5 h-3.5 cursor-pointer"
+                  />
+                  {column.id === 'transaction_id' ? 'Tx ID' : column.id === 'transaction_type' ? 'Type' : column.id === 'transaction_date' ? 'Date' : column.id === 'sold_price' ? 'Amount' : column.id === 'buyer_phone' ? 'Customer Phone' : column.id === 'payment_status' ? 'Status' : column.id === 'actions' ? 'Actions' : column.id}
+                </label>
+              );
+            })}
+          </Dropdown>
 
           <button
             onClick={() => loadData(true)}

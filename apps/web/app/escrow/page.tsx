@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   ShieldCheck, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Lock,
-  RefreshCw, Scale, ArrowRight, User, Banknote, ShieldAlert, Award, Video,
-  Gamepad2, Info, Search, ListChecks, HelpCircle
+  Scale, ArrowRight, User, Banknote, ShieldAlert, Award, Video,
+  Gamepad2, Search, ListChecks, Check, Clock
 } from "lucide-react";
 
 export default function EscrowPage() {

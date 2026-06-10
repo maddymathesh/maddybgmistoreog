@@ -1,3 +1,4 @@
+/* global document, MouseEvent, window, alert */
 /**
  * pdfGenerator.js
  * MBSx STORE — Production PDF Generator
@@ -99,6 +100,7 @@ function pdfSafeText(text, font) {
   const replaced = Array.from(safeVal(text))
     .map(char => PDF_TEXT_REPLACEMENTS[char] ?? char)
     .join('')
+    // eslint-disable-next-line no-control-regex
     .replace(/[\r\n\x00-\x1F\x7F-\x9F]/g, '');
 
   return Array.from(replaced)
@@ -247,7 +249,7 @@ function labelRow(page, fonts, label, value, y, {
   valueSize  = 9,
   colSplit    = 160,
   indent      = MARGIN,
-  bold        = false,
+  _bold        = false,
   valueBold   = false,
 } = {}) {
   txt(page, fonts, label, indent, y, { size: labelSize, color: labelColor });
@@ -345,11 +347,6 @@ function sectionHeader(page, fonts, title, y) {
 }
 
 /** Draw a data panel (light bg, rounded border). Returns y after panel. */
-function openPanel(page, y, height) {
-  rect(page, MARGIN, y - height, CONTENT_W, height,
-       { fill: C.panelBg, border: C.borderLight, borderW: 0.6 });
-  return y - 6;
-}
 
 /** Draw the footer band. Respects excludePrintDate option. */
 function drawFooter(page, fonts, isInternal, excludePrintDate = false) {
@@ -434,7 +431,7 @@ function drawContacts(page, fonts, contacts, y) {
 // TRANSACTION-TYPE SPECIFIC BLOCKS
 // ─────────────────────────────────────────────
 
-function drawAccountSection(page, fonts, acc, y, isInternal) {
+function drawAccountSection(page, fonts, acc, y, _isInternal) {
   const hasLogin = acc.primary_login_provider !== null || acc.primary_credentials !== null || acc.primary_mothermail_status !== null ||
                    acc.secondary_login_provider !== null || acc.secondary_credentials !== null || acc.secondary_mothermail_status !== null;
                    
@@ -615,13 +612,14 @@ function drawInternalContacts(page, fonts, tx, y) {
 // ─────────────────────────────────────────────
 // WATERMARK (admin copies only)
 // ─────────────────────────────────────────────
-function drawWatermark(page, fonts) {
-  const label = 'CONFIDENTIAL';
-  for (let i = 0; i < 3; i++) {
-    txt(page, fonts, label, 80 + i * 180, 500 - i * 120,
-        { size: 36, color: rgb(0.92, 0.78, 0.20), bold: true });
-  }
-}
+// drawWatermark is defined but currently unused
+// function drawWatermark(page, fonts) {
+//   const label = 'CONFIDENTIAL';
+//   for (let i = 0; i < 3; i++) {
+//     txt(page, fonts, label, 80 + i * 180, 500 - i * 120,
+//         { size: 36, color: rgb(0.92, 0.78, 0.20), bold: true });
+//   }
+// }
 
 // ─────────────────────────────────────────────
 // CORE PDF BUILDERS

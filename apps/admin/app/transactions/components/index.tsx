@@ -15,27 +15,19 @@ import ReportsView from './ReportsView';
 import SettingsView from './SettingsView';
 import ProductInsights from './ProductInsights';
 import TasksAlerts from './TasksAlerts';
-import CustomerFeedback from './CustomerFeedback';
+// Removed unused CustomerFeedback import
 import AdminActivityLog from './AdminActivityLog';
 import FinancialOverview from './FinancialOverview';
+import Link from 'next/link';
 
 import {
-  LayoutDashboard,
-  Receipt,
-  UserSquare2,
-  Gift,
-  Car,
-  Coins,
   Users,
   ShieldCheck,
-  FileCheck,
   FileBarChart,
   Settings,
-  LogOut,
   Plus,
   Layers,
   CheckSquare,
-  MessageSquare,
   History,
   DollarSign,
   Menu,
@@ -43,7 +35,6 @@ import {
   ShieldAlert,
   Loader2
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 const SIDEBAR_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -62,7 +53,8 @@ export default function TransactionsLayout() {
   const { user, isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const router = useRouter();
+  // router is defined but currently unused
+  // const router = useRouter();
 
   if (!isLoaded) {
     return (
@@ -78,13 +70,13 @@ export default function TransactionsLayout() {
         <ShieldAlert size={48} style={{ color: 'var(--color-gold)' }} />
         <h1 style={{ fontFamily: 'var(--font-h)', fontSize: '24px', fontWeight: 900 }}>Authentication Required</h1>
         <p style={{ fontSize: '14px', color: 'var(--color-muted)', fontFamily: 'monospace' }}>Please sign in to access the Transactions Panel.</p>
-        <a href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</a>
+        <Link href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
       </div>
     );
   }
 
   const isPermanentAdmin = user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com";
-  const userRole = (user?.publicMetadata?.role) || "USER";
+  const userRole = (user?.publicMetadata?.role as string) || "USER";
   const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER", "CONTENT_MANAGER"].includes(userRole);
 
   if (!isAdmin) {
@@ -93,7 +85,7 @@ export default function TransactionsLayout() {
         <ShieldAlert size={48} style={{ color: 'var(--color-red)' }} />
         <h1 style={{ fontFamily: 'var(--font-h)', fontSize: '24px', fontWeight: 900, color: 'var(--color-red)' }}>Access Denied</h1>
         <p style={{ fontSize: '14px', color: 'var(--color-muted)', fontFamily: 'monospace' }}>You do not have administrative privileges to view this page.</p>
-        <a href="/" className="btn btn-outline px-6 py-2.5 text-sm">← Return Home</a>
+        <Link href="/" className="btn btn-outline px-6 py-2.5 text-sm">← Return Home</Link>
       </div>
     );
   }

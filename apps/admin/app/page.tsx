@@ -2,11 +2,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import {
   LayoutDashboard, Gamepad2, Star, MessageSquare, Link2, CreditCard,
-  Radio, Settings, Plus, Edit, Trash2, Check, X, ShieldAlert,
+  Settings, Plus, Edit, Trash2, Check, X, ShieldAlert,
   Loader2, RefreshCw, MessageCircle, Copy,
   TrendingUp, Users, Zap, Camera, Key, User,
   Menu, Coins, Gift, Car, FileCheck, History
@@ -18,11 +19,8 @@ import {
   getAdminReviews, updateReviewStatus, deleteReview,
   getFeedbackLogs, updateFeedbackStatus,
   getPaymentLinks, createPaymentLink, revokePaymentLink,
-  getTransactionsRegistry, createManualTransaction,
-  getAdminPaymentSettings, updateAdminPaymentSettings
+  getTransactionsRegistry
 } from "./actions";
-
-import { parseDescRawText, buildFormattedOutput } from "@repo/parser";
 
 type ActiveTab = 
   | "accounts"
@@ -67,8 +65,6 @@ export default function AdminDashboard() {
   const [reviewsList, setReviewsList] = useState<any[]>([]);
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
   const [paymentLinksList, setPaymentLinksList] = useState<any[]>([]);
-  const [transactionsList, setTransactionsList] = useState<any[]>([]);
-  const [settingsData, setSettingsData] = useState<any>(null);
 
   // Description Factory State
   const [rawDescription, setRawDescription] = useState("");
@@ -102,16 +98,14 @@ export default function AdminDashboard() {
         reviewsRes,
         feedbackRes,
         payLinksRes,
-        txnRes,
-        settingsRes
+        _txnRes
       ] = await Promise.all([
         getAdminMetrics(),
         getAdminProducts(),
         getAdminReviews(),
         getFeedbackLogs(),
         getPaymentLinks(),
-        getTransactionsRegistry(),
-        getAdminPaymentSettings()
+        getTransactionsRegistry()
       ]);
 
       if (metricsRes.success) setMetrics(metricsRes.metrics);
@@ -119,8 +113,6 @@ export default function AdminDashboard() {
       if (reviewsRes.success) setReviewsList(reviewsRes.reviews || []);
       if (feedbackRes.success) setFeedbackList(feedbackRes.feedback || []);
       if (payLinksRes.success) setPaymentLinksList(payLinksRes.paymentLinks || []);
-      if (txnRes.success) setTransactionsList(txnRes.transactions || []);
-      if (settingsRes.success) setSettingsData(settingsRes.settings);
     } catch (_err) {
       console.error("Failed to load dashboard details:", _err);
       toast.error("Failed to sync some dashboard items");
@@ -138,7 +130,6 @@ export default function AdminDashboard() {
   };
 
   // --- STOCKS FORM STATE ---
-  const [showProductModal, setShowProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productForm, setProductForm] = useState({
     title: "",
@@ -153,7 +144,6 @@ export default function AdminDashboard() {
     tag: "None",
     imageUrls: [] as string[]
   });
-  const [newImageUrl, setNewImageUrl] = useState("");
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +157,6 @@ export default function AdminDashboard() {
         const res = await updateProduct(editingProduct.id, productForm);
         if (res.success) {
           toast.success("Product updated successfully!");
-          setShowProductModal(false);
           setEditingProduct(null);
           triggerRefresh();
         } else {
@@ -177,7 +166,6 @@ export default function AdminDashboard() {
         const res = await createProduct(productForm);
         if (res.success) {
           toast.success("Product created successfully!");
-          setShowProductModal(false);
           triggerRefresh();
         } else {
           toast.error("Failed to create product");
@@ -186,24 +174,6 @@ export default function AdminDashboard() {
     } catch (_err) {
       toast.error("Failed to submit product form");
     }
-  };
-
-  const startEditProduct = (prod: any) => {
-    setEditingProduct(prod);
-    setProductForm({
-      title: prod.title || "",
-      description: prod.description || "",
-      price: prod.price || "",
-      category: prod.category || "Budget",
-      status: prod.status || "available",
-      youtubeUrl: prod.youtubeUrl || "",
-      primaryLogin: prod.primaryLogin || "Facebook",
-      secondaryLogin: prod.secondaryLogin || "Play Games",
-      unlinkGuarantee: prod.unlinkGuarantee || "Not Applicable",
-      tag: prod.tag || "None",
-      imageUrls: prod.imageUrls || []
-    });
-    setShowProductModal(true);
   };
 
   const handleDeleteProduct = async (id: string) => {
@@ -332,143 +302,8 @@ export default function AdminDashboard() {
     });
   };
 
-  // --- MANUAL TRANSACTION LOGGING ---
-  const [txnForm, setTxnForm] = useState({
-    transactionId: "",
-    buyerName: "",
-    buyerPhone: "",
-    buyerContact: "",
-    totalAmount: "",
-    modeOfDeal: "WhatsApp", // WhatsApp, Telegram, F2F, Middleman
-    dealDate: new Date().toISOString().split("T")[0] || "",
-    details: {
-      type: "account" as "account" | "uc" | "xsuit" | "supercar",
-      productId: "",
-      ownerPrice: "",
-      soldPrice: "",
-      ownerPhone: "",
-      sellerPhone: "",
-      resellerPhone: "",
-      accountOwner: "",
-      logins: "Facebook",
-      credentials: "",
-      ucAmount: 0,
-      xsuitName: "",
-      carName: ""
-    }
-  });
-
-  const handleTxnSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!txnForm.buyerName || !txnForm.totalAmount) {
-      toast.error("Buyer Name and Total Amount are required");
-      return;
-    }
-
-    try {
-      const res = await createManualTransaction({
-        transactionId: txnForm.transactionId,
-        buyerName: txnForm.buyerName,
-        buyerPhone: txnForm.buyerPhone,
-        buyerContact: txnForm.buyerContact,
-        totalAmount: txnForm.totalAmount,
-        modeOfDeal: txnForm.modeOfDeal,
-        dealDate: txnForm.dealDate,
-        details: txnForm.details
-      });
-
-      if (res.success) {
-        toast.success("Transaction Logged Successfully!");
-        setTxnForm({
-          transactionId: "",
-          buyerName: "",
-          buyerPhone: "",
-          buyerContact: "",
-          totalAmount: "",
-          modeOfDeal: "WhatsApp",
-          dealDate: new Date().toISOString().split("T")[0] || "",
-          details: {
-            type: "account",
-            productId: "",
-            ownerPrice: "",
-            soldPrice: "",
-            ownerPhone: "",
-            sellerPhone: "",
-            resellerPhone: "",
-            accountOwner: "",
-            logins: "Facebook",
-            credentials: "",
-            ucAmount: 0,
-            xsuitName: "",
-            carName: ""
-          }
-        });
-        triggerRefresh();
-      } else {
-        toast.error("Failed to log transaction: " + res.error);
-      }
-    } catch (_err) {
-      toast.error("Error submitting transaction log");
-    }
-  };
-
-  // --- BROADCAST MAKER ---
-  const [broadcastInput, setBroadcastInput] = useState("");
-  const [broadcastForm, setBroadcastForm] = useState<any>(null);
-  const [styleMode, setStyleMode] = useState<"plain" | "whatsapp" | "telegram">("plain");
-  const [broadcastOutput, setBroadcastOutput] = useState("");
-
-  const handleParseBroadcast = () => {
-    if (!broadcastInput.trim()) {
-      toast.error("Input raw description copy to parse");
-      return;
-    }
-    const parsed = parseDescRawText(broadcastInput);
-    setBroadcastForm(parsed);
-    const output = buildFormattedOutput(parsed, styleMode);
-    setBroadcastOutput(output);
-    toast.success("Account description parsed successfully!");
-  };
-
-  useEffect(() => {
-    if (broadcastForm) {
-      const output = buildFormattedOutput(broadcastForm, styleMode);
-      setBroadcastOutput(output);
-    }
-  }, [broadcastForm, styleMode]);
-
-  const copyBroadcastText = () => {
-    navigator.clipboard.writeText(broadcastOutput).then(() => {
-      toast.success("Broadcast formatted payload copied to clipboard!");
-    });
-  };
-
   // --- GLOBAL SETTINGS ---
-  const [settingsForm, setSettingsForm] = useState({
-    payeeName: "",
-    payeeUpiId: "",
-    bankName: "",
-    accountType: "SAVINGS ACCOUNT",
-    accountHolder: "",
-    accountNumber: "",
-    ifscCode: "",
-    branch: ""
-  });
-
-  useEffect(() => {
-    if (settingsData) {
-      setSettingsForm({
-        payeeName: settingsData.payeeName || "",
-        payeeUpiId: settingsData.payeeUpiId || "",
-        bankName: settingsData.bankName || "",
-        accountType: settingsData.accountType || "SAVINGS ACCOUNT",
-        accountHolder: settingsData.accountHolder || "",
-        accountNumber: settingsData.accountNumber || "",
-        ifscCode: settingsData.ifscCode || "",
-        branch: settingsData.branch || ""
-      });
-    }
-  }, [settingsData]);
+  // Unused state hooks (txnForm, settingsForm) removed to resolve ESLint warnings
 
   // Description Factory Parser
   useEffect(() => {
@@ -520,20 +355,7 @@ export default function AdminDashboard() {
   }, [rawDescription]);
 
 
-  const handleSettingsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await updateAdminPaymentSettings(settingsForm);
-      if (res.success) {
-        toast.success("Payment Gateway Settings Updated!");
-        triggerRefresh();
-      } else {
-        toast.error("Failed to update payment settings");
-      }
-    } catch (_err) {
-      toast.error("Error saving global payment settings");
-    }
-  };
+  // Unused handleSettingsSubmit removed to resolve ESLint warning
 
   // While Clerk is loading, show spinner
   if (!isLoaded) {
@@ -551,7 +373,7 @@ export default function AdminDashboard() {
         <ShieldAlert size={48} className="text-[var(--color-gold)]" />
         <h1 className="font-h text-2xl font-black">Authentication Required</h1>
         <p className="text-sm text-[var(--color-muted)] font-mono">Please sign in to access the Admin Panel.</p>
-        <a href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</a>
+        <Link href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
       </div>
     );
   }
@@ -563,7 +385,7 @@ export default function AdminDashboard() {
         <ShieldAlert size={48} className="text-red-500" />
         <h1 className="font-h text-2xl font-black text-red-400">Access Denied</h1>
         <p className="text-sm text-[var(--color-muted)] font-mono">You do not have administrative privileges to view this page.</p>
-        <a href="/" className="btn btn-outline px-6 py-2.5 text-sm">← Return Home</a>
+        <Link href="/" className="btn btn-outline px-6 py-2.5 text-sm">← Return Home</Link>
       </div>
     );
   }
@@ -619,12 +441,12 @@ export default function AdminDashboard() {
         </div>
 
         <div className="p-6 border-t border-white/5 flex flex-col gap-3">
-          <a 
+          <Link 
             href="/transactions"
             className="w-full btn btn-outline justify-center border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 text-[11px] py-2"
           >
             <CreditCard size={14} /> Transaction Panel
-          </a>
+          </Link>
           <div className="w-full flex items-center justify-between bg-black/20 p-2 rounded-lg border border-white/5">
             <UserButton afterSignOutUrl="/sign-in" />
             <span className="text-[10px] text-[var(--color-muted)] font-bold">LOGGED IN</span>

@@ -1,3 +1,4 @@
+/* global localStorage */
 /**
  * pdfFieldConfig.js
  * MBSx STORE — Master PDF Field Registry

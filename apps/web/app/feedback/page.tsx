@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @next/next/no-img-element, @next/next/no-html-link-for-pages */
+/* eslint-disable @typescript-eslint/no-explicit-any, @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SocialFloat from "../../components/SocialFloat";
 import { MessageSquare, Star, Send, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import { submitFeedback } from "../actions";
 import { toast } from "sonner";

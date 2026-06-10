@@ -4,11 +4,10 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import {
   Banknote, Zap, Clock, ShieldCheck, FileText, Coins, Check, AlertTriangle, 
-  ChevronDown, ChevronUp, MapPin, X, ArrowRight, Shield, Landmark, Bitcoin, MessageCircle, ShieldAlert, Award
+  ChevronDown, ChevronUp, MapPin, X, ArrowRight, Landmark, Bitcoin, MessageCircle, ShieldAlert, Award
 } from "lucide-react";
 
 export default function SellPage() {
-  const [activeOption, setActiveOption] = useState<number>(0);
   const [f2fExpanded, setF2fExpanded] = useState(false);
   const [kycExpanded, setKycExpanded] = useState(false);
   const [payoutExpanded, setPayoutExpanded] = useState(false);
@@ -95,7 +94,7 @@ export default function SellPage() {
 
           <div className="flex gap-4 justify-center flex-wrap mb-8">
             <button
-              onClick={() => { setActiveOption(0); setTimeout(() => scrollTo(optionsRef), 100); }}
+              onClick={() => { setTimeout(() => scrollTo(optionsRef), 100); }}
               className="flex items-center gap-2 px-8 py-4 rounded-xl font-h font-bold text-sm tracking-wide transition-transform hover:-translate-y-1"
               style={{
                 background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
@@ -105,7 +104,7 @@ export default function SellPage() {
               <Clock size={16} /> Hold & Sell Option
             </button>
             <button
-              onClick={() => { setActiveOption(1); setTimeout(() => scrollTo(optionsRef), 100); }}
+              onClick={() => { setTimeout(() => scrollTo(optionsRef), 100); }}
               className="flex items-center gap-2 px-8 py-4 rounded-xl font-h font-bold text-sm tracking-wide transition-transform hover:-translate-y-1 bg-white/5 text-white hover:bg-white/10 backdrop-blur-sm border border-white/10"
             >
               <Zap size={16} /> Instant Sell Option

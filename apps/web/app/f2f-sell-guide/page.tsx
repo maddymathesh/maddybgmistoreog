@@ -25,7 +25,7 @@ export default function F2FSellGuide() {
         position: "relative", width: "100%",
         paddingTop: "120px", paddingBottom: "80px",
         display: "flex", alignItems: "center", justifyContent: "center",
-        flexDirection: "column", textAlign: "center", px: "5%"
+        flexDirection: "column", textAlign: "center", paddingLeft: "5%", paddingRight: "5%"
       }}>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0500] via-[#080a0f] to-[#080a0f] z-0" />
 
@@ -221,7 +221,7 @@ export default function F2FSellGuide() {
                 <g transform="translate(50, 120)">
                   <circle r="6" fill="#3b82f6" />
                   <circle r="12" fill="none" stroke="#3b82f6" strokeWidth="1" opacity="0.5" />
-                  <rect x="10" y="-8" width="60" height="16" rx="4" fill="#111520" border="1" stroke="#3b82f6" />
+                  <rect x="10" y="-8" width="60" height="16" rx="4" fill="#111520" stroke="#3b82f6" />
                   <text x="40" y="3" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">Vellore</text>
                 </g>
                 

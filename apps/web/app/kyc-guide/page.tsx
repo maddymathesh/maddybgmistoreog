@@ -12,7 +12,7 @@ export default function KycGuide() {
         position: "relative", width: "100%",
         paddingTop: "140px", paddingBottom: "60px",
         display: "flex", alignItems: "center", justifyContent: "center",
-        flexDirection: "column", textAlign: "center", px: "5%"
+        flexDirection: "column", textAlign: "center", paddingLeft: "5%", paddingRight: "5%"
       }}>
         <div className="absolute inset-0 bg-gradient-to-b from-[#050a08] via-[#080a0f] to-[#080a0f] z-0" />
 

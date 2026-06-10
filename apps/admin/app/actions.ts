@@ -30,7 +30,7 @@ async function verifyAdminAccess() {
     const email = user.primaryEmailAddressId 
       ? user.emailAddresses.find(e => e.id === user.primaryEmailAddressId)?.emailAddress 
       : user.emailAddresses[0]?.emailAddress;
-    if (email === "maddybgmistoreog@gmail.com") {
+    if (email === "r.mateshwaran.io@gmail.com" ) {
       isPermanentAdmin = true;
     }
   } catch (error) {

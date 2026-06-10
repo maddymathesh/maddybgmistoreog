@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @next/next/no-img-element, react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars, @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ShoppingCart, Banknote, Shield, Lock, Zap, CircleDollarSign,
-  Smartphone, CheckCircle, Star, ArrowRight, ChevronDown
+  Smartphone, CheckCircle, Star, ArrowRight, ChevronDown, Sliders, Users,
+  TrendingUp, ShieldCheck, RefreshCw, ShieldAlert, Scale
 } from "lucide-react";
 import CountUp from "../components/CountUp";
 import LightRays from "../components/LightRays";
@@ -82,48 +83,144 @@ const serviceCards = [
   {
     badge: "SECURE PURCHASE",
     badgeColor: "#f5c518",
-    icon: <ShoppingCart size={32} />,
-    iconBg: "rgba(245,197,24,0.15)",
-    cardGrad: "linear-gradient(135deg, rgba(120,60,0,0.45) 0%, rgba(60,30,0,0.6) 100%)",
-    cardBorder: "rgba(245,197,24,0.2)",
-    title: "Buy an Account",
-    desc: "Choose from ready stock or get a custom account built to your exact specs and budget.",
+    badgeBg: "rgba(245,197,24,0.08)",
+    badgeBorder: "rgba(245,197,24,0.3)",
+    cardGrad: "linear-gradient(180deg, rgba(22,17,10,0.75) 0%, rgba(8,10,15,0.98) 100%)",
+    cardBorder: "rgba(245,197,24,0.15)",
+    glowColor: "rgba(245,197,24,0.04)",
+    title: "Buy Safe & Secure Accounts",
+    desc: "Choose from Instant-delivery Ready-to-Play accounts, market-listed accounts from our official channels, or request custom accounts tailored to your budget and skin requirements within 24-48 hours.",
+    bgIcon: (
+      <svg className="absolute -right-4 -top-4 text-yellow-500/[0.04] pointer-events-none group-hover:scale-110 transition-transform duration-500" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+    ),
+    bullets: [
+      {
+        bold: "Ready-to-Play Accounts",
+        text: "Verified and secure accounts available with instant delivery.",
+        icon: <CheckCircle size={14} className="text-[#f5c518]" />
+      },
+      {
+        bold: "Market Available Accounts",
+        text: "Daily account listings ranging from ₹5K to ₹500K shared through our official channels.",
+        icon: <ShoppingCart size={14} className="text-[#f5c518]" />
+      },
+      {
+        bold: "Custom Requirement Accounts",
+        text: "Personalized account sourcing based on your exact budget, skins, and preferences within 24-48 hours.",
+        icon: <Sliders size={14} className="text-[#f5c518]" />
+      },
+      {
+        bold: "Online & Face-to-Face Deal Modes",
+        text: "Secure online transactions and face-to-face deals available for high-value trades (₹100K+).",
+        icon: <Users size={14} className="text-[#f5c518]" />
+      }
+    ],
     href: "/buy",
-    btnLabel: "BUY NOW",
+    btnLabel: "CLICK HERE TO BUY AN ACCOUNT",
+    btnBg: "rgba(245,197,24,0.03)",
+    btnBorder: "rgba(245,197,24,0.25)",
+    btnHoverBg: "#f5c518",
     btnColor: "#f5c518",
-    btnBg: "rgba(245,197,24,0.15)",
-    btnBorder: "rgba(245,197,24,0.4)",
+    btnIcon: <ShoppingCart size={14} />
   },
   {
     badge: "TRANSPARENT DEAL",
-    badgeColor: "#22C55E",
-    icon: <Banknote size={32} />,
-    iconBg: "rgba(34,197,94,0.15)",
-    cardGrad: "linear-gradient(135deg, rgba(0,80,40,0.45) 0%, rgba(0,40,20,0.6) 100%)",
-    cardBorder: "rgba(34,197,94,0.2)",
-    title: "Sell Your Account",
-    desc: "Get maximum value for your BGMI account — instant payout or hold & sell for best price.",
+    badgeColor: "#10B981",
+    badgeBg: "rgba(16,185,129,0.08)",
+    badgeBorder: "rgba(16,185,129,0.3)",
+    cardGrad: "linear-gradient(180deg, rgba(10,22,17,0.75) 0%, rgba(8,10,15,0.98) 100%)",
+    cardBorder: "rgba(16,185,129,0.15)",
+    glowColor: "rgba(16,185,129,0.04)",
+    title: "Sell & Convert Your Account into Cash",
+    desc: "Sell your BGMI account securely at a fair market price through two flexible selling options: instant sale for immediate cash after login verification, or hold-and-sell mode to maximize your account's resale value.",
+    bgIcon: (
+      <svg className="absolute -right-4 -top-4 text-emerald-500/[0.04] pointer-events-none group-hover:scale-110 transition-transform duration-500" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+    bullets: [
+      {
+        bold: "Top Market Valuation",
+        text: "Fair and transparent pricing based on current market demand.",
+        icon: <TrendingUp size={14} className="text-[#10B981]" />
+      },
+      {
+        bold: "Instant Cashouts",
+        text: "Payments processed quickly via UPI, bank transfer, or other supported methods.",
+        icon: <Zap size={14} className="text-[#10B981]" />
+      },
+      {
+        bold: "100% Secure Escrow Protection",
+        text: "Fully secured transactions with transparent handling.",
+        icon: <ShieldCheck size={14} className="text-[#10B981]" />
+      },
+      {
+        bold: "Online & Face-to-Face Deal Modes",
+        text: "Safe online transactions and in-person deals available for high-value accounts (₹100K+).",
+        icon: <Users size={14} className="text-[#10B981]" />
+      }
+    ],
     href: "/sell",
-    btnLabel: "SELL NOW",
-    btnColor: "#22C55E",
-    btnBg: "rgba(34,197,94,0.15)",
-    btnBorder: "rgba(34,197,94,0.4)",
+    btnLabel: "CLICK HERE TO SELL YOUR ACCOUNT",
+    btnBg: "rgba(16,185,129,0.03)",
+    btnBorder: "rgba(16,185,129,0.25)",
+    btnHoverBg: "#10B981",
+    btnColor: "#10B981",
+    btnIcon: <Banknote size={14} />
   },
   {
     badge: "SECURE TRADE",
     badgeColor: "#a855f7",
-    icon: <Shield size={32} />,
-    iconBg: "rgba(168,85,247,0.15)",
-    cardGrad: "linear-gradient(135deg, rgba(70,0,120,0.45) 0%, rgba(40,0,70,0.6) 100%)",
-    cardBorder: "rgba(168,85,247,0.2)",
-    title: "Account Recovery",
-    desc: "Lost access to your account? We can help you recover it safely and securely.",
+    badgeBg: "rgba(168,85,247,0.08)",
+    badgeBorder: "rgba(168,85,247,0.3)",
+    cardGrad: "linear-gradient(180deg, rgba(20,10,22,0.75) 0%, rgba(8,10,15,0.98) 100%)",
+    cardBorder: "rgba(168,85,247,0.15)",
+    glowColor: "rgba(168,85,247,0.04)",
+    title: "Exchange Your Old Account & Get Your Dream Account",
+    desc: "Trade your existing BGMI account for a higher-tier or lower-tier account from our marketplace with secure valuation, protected exchanges, and smooth transfer support.",
+    bgIcon: (
+      <svg className="absolute -right-4 -top-4 text-purple-500/[0.04] pointer-events-none group-hover:scale-110 transition-transform duration-500" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+        <path d="M17 1l4 4-4 4" />
+        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+        <path d="M7 23l-4-4 4-4" />
+        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+      </svg>
+    ),
+    bullets: [
+      {
+        bold: "Tier Upgrade & Downgrade Options",
+        text: "Swap your account for premium or budget-friendly inventory.",
+        icon: <RefreshCw size={14} className="text-[#a855f7]" />
+      },
+      {
+        bold: "Escrow Trade Protection",
+        text: "Secure dual-handover process for safer exchanges.",
+        icon: <ShieldAlert size={14} className="text-[#a855f7]" />
+      },
+      {
+        bold: "Fair Valuation System",
+        text: "Instant appraisal and transparent adjustment pricing.",
+        icon: <Scale size={14} className="text-[#a855f7]" />
+      },
+      {
+        bold: "Online & Face-to-Face Deal Modes",
+        text: "Trusted online and offline exchange options available for premium-value trades (₹100K+).",
+        icon: <Users size={14} className="text-[#a855f7]" />
+      }
+    ],
     href: "/exchange",
-    btnLabel: "RECOVER NOW",
+    btnLabel: "CLICK HERE TO EXCHANGE YOUR ACCOUNT",
+    btnBg: "rgba(168,85,247,0.03)",
+    btnBorder: "rgba(168,85,247,0.25)",
+    btnHoverBg: "#a855f7",
     btnColor: "#a855f7",
-    btnBg: "rgba(168,85,247,0.15)",
-    btnBorder: "rgba(168,85,247,0.4)",
-  },
+    btnIcon: <RefreshCw size={14} />
+  }
 ];
 
 // ── Why trust feature cards ───────────────────────────────────────────────────
@@ -290,7 +387,7 @@ export default function HomePage() {
           <div key={s.label} className="stat-cell">
             <div className="stat-value">
               {s.prefix || ""}
-              <CountUp to={s.value} decimals={s.decimals} />
+              <CountUp to={s.value} />
               {s.suffix}
             </div>
             <div className="stat-label">{s.label}</div>
@@ -301,30 +398,57 @@ export default function HomePage() {
       {/* ════════════════════ 3. WHAT WE OFFER ════════════════════ */}
       <section className="section-padded">
         <div className="section-label">WHAT WE OFFER</div>
-        <h2 className="section-title">Buy or Sell — We&apos;ve Got You</h2>
-        <p className="section-desc">Choose what you&apos;re looking for below and we&apos;ll take care of the rest.</p>
+        <h2 className="section-title">Your All-in-One BGMI Marketplace</h2>
+        <p className="section-desc">Your complete gaming catalog. Simple, highly secure, and verified marketplace.</p>
 
         <div className="service-cards-grid">
           {serviceCards.map((card) => (
             <div
               key={card.title}
-              className="service-card"
-              style={{ background: card.cardGrad, borderColor: card.cardBorder }}
+              className="service-card group"
+              style={{
+                background: card.cardGrad,
+                borderColor: card.cardBorder,
+                boxShadow: `0 8px 30px ${card.glowColor}`,
+              }}
             >
+              {card.bgIcon}
+              
               <div
-                className="service-card-icon"
-                style={{ background: card.iconBg, color: card.badgeColor }}
+                className="service-card-badge"
+                style={{
+                  color: card.badgeColor,
+                  background: card.badgeBg,
+                  borderColor: card.badgeBorder,
+                }}
               >
-                {card.icon}
+                {card.badge}
               </div>
-              <h3 className="service-card-title">{card.title}</h3>
+
+              <h3 className="service-card-title mt-4">{card.title}</h3>
               <p className="service-card-desc">{card.desc}</p>
+              
+              <div className="flex flex-col gap-3 mb-8">
+                {card.bullets.map((b, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-left">
+                    <span className="mt-0.5 flex-shrink-0">{b.icon}</span>
+                    <span className="text-muted leading-relaxed">
+                      <strong className="text-white font-semibold">{b.bold}</strong> — {b.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
               <Link
                 href={card.href}
-                className="service-card-btn"
-                style={{ color: card.btnColor, borderColor: card.btnBorder, background: card.btnBg }}
+                className="service-card-btn-full"
+                style={{
+                  color: card.btnColor,
+                  borderColor: card.btnBorder,
+                  background: card.btnBg,
+                }}
               >
-                <ShoppingCart size={14} />
+                {card.btnIcon}
                 {card.btnLabel} →
               </Link>
             </div>
@@ -602,35 +726,52 @@ export default function HomePage() {
           grid-template-columns: repeat(3, 1fr);
           gap: 24px;
         }
-        @media (max-width: 900px) { .service-cards-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1024px) { .service-cards-grid { grid-template-columns: 1fr; } }
         .service-card {
           border: 1px solid; border-radius: 18px;
-          padding: 32px 28px;
-          transition: transform .25s, box-shadow .25s;
+          padding: 36px 32px;
+          transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .3s, border-color .3s;
           position: relative; overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
-        .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .service-card-icon {
-          width: 60px; height: 60px; border-radius: 14px;
-          display: flex; align-items: center; justify-content: center;
-          margin-bottom: 20px;
+        .service-card:hover { 
+          transform: translateY(-6px); 
+          box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+          border-color: rgba(255,255,255,0.2) !important;
+        }
+        .service-card-badge {
+          align-self: flex-start;
+          border: 1px solid;
+          font-size: 10px; font-weight: 700;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          padding: 5px 12px; border-radius: 12px;
         }
         .service-card-title {
           font-family: var(--font-h); font-size: 22px; font-weight: 800;
-          color: #fff; margin: 0 0 12px; line-height: 1.2;
+          color: #fff; margin: 16px 0 12px; line-height: 1.25;
         }
         .service-card-desc {
-          color: var(--color-muted); font-size: 14px; line-height: 1.7;
-          margin-bottom: 28px;
+          color: var(--color-muted); font-size: 13.5px; line-height: 1.7;
+          margin-bottom: 24px;
         }
-        .service-card-btn {
-          display: inline-flex; align-items: center; gap: 8px;
-          font-size: 12px; font-weight: 800; letter-spacing: 1px;
+        .service-card-btn-full {
+          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+          font-size: 11px; font-weight: 800; letter-spacing: 1.2px;
           text-transform: uppercase; text-decoration: none;
-          padding: 10px 20px; border-radius: 8px; border: 1px solid;
-          transition: transform .2s;
+          padding: 14px 20px; border-radius: 10px; border: 1px solid;
+          transition: all .25s ease;
+          width: 100%;
+          margin-top: auto;
         }
-        .service-card-btn:hover { transform: translateY(-1px); }
+        .service-card-btn-full:hover { 
+          background: #fff !important; 
+          color: #000 !important; 
+          border-color: #fff !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(255,255,255,0.15);
+        }
 
         /* ── Connect Grid ── */
         .connect-grid {
