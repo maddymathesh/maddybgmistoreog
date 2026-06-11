@@ -4,7 +4,7 @@ import {
   db, siteViews, products,
   reviews, customerFeedback, paymentLinks, adminPaymentSettings, 
   transactions, accountTransactions, xsuitTransactions, supercarTransactions, ucTransactions,
-  activityLogs,
+  activityLogs, ucPrices, xsuitGifts, supercarGifts, proofs,
   eq, desc
 } from "@repo/db";
 import { auth } from "@clerk/nextjs/server";
@@ -667,3 +667,165 @@ export async function revokeAdmin(userId: string) {
   }
 }
 
+// ==========================================
+// UC PACKS
+// ==========================================
+export async function getUcPacks() {
+  await verifyAdminAccess();
+  try {
+    const packs = await db.select().from(ucPrices).orderBy(desc(ucPrices.createdAt));
+    return { success: true, ucPacks: packs };
+  } catch (error: any) {
+    console.error("Failed to fetch UC packs:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createUcPack(data: { ucAmount: number, marketPrice?: string, offerPrice: string, bonusUc?: number, method?: string, tag?: string }) {
+  await verifyAdminAccess();
+  try {
+    await db.insert(ucPrices).values({
+      ...data,
+      bonusUc: data.bonusUc || 0,
+      method: data.method || "view_login",
+      tag: data.tag || "None",
+    });
+    await logAdminAction("Catalog", `Added new UC Pack: ${data.ucAmount} UC`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to create UC pack:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteUcPack(id: string) {
+  await verifyAdminAccess();
+  try {
+    await db.delete(ucPrices).where(eq(ucPrices.id, id));
+    await logAdminAction("Catalog", `Deleted UC Pack ID: ${id}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to delete UC pack:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+// ==========================================
+// X-SUIT GIFTS
+// ==========================================
+export async function getXsuitGifts() {
+  await verifyAdminAccess();
+  try {
+    const gifts = await db.select().from(xsuitGifts).orderBy(desc(xsuitGifts.createdAt));
+    return { success: true, xsuitGifts: gifts };
+  } catch (error: any) {
+    console.error("Failed to fetch X-suit gifts:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createXsuitGift(data: { name: string, price: string, imageUrl?: string, tag?: string }) {
+  await verifyAdminAccess();
+  try {
+    await db.insert(xsuitGifts).values({
+      ...data,
+      tag: data.tag || "None",
+    });
+    await logAdminAction("Catalog", `Added new X-Suit Gift: ${data.name}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to create X-suit gift:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteXsuitGift(id: string) {
+  await verifyAdminAccess();
+  try {
+    await db.delete(xsuitGifts).where(eq(xsuitGifts.id, id));
+    await logAdminAction("Catalog", `Deleted X-Suit Gift ID: ${id}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to delete X-suit gift:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+// ==========================================
+// SUPERCAR GIFTS
+// ==========================================
+export async function getSupercars() {
+  await verifyAdminAccess();
+  try {
+    const cars = await db.select().from(supercarGifts).orderBy(desc(supercarGifts.createdAt));
+    return { success: true, supercars: cars };
+  } catch (error: any) {
+    console.error("Failed to fetch Supercar gifts:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createSupercar(data: { name: string, price: string, type?: string, imageUrl?: string, tag?: string }) {
+  await verifyAdminAccess();
+  try {
+    await db.insert(supercarGifts).values({
+      ...data,
+      tag: data.tag || "None",
+    });
+    await logAdminAction("Catalog", `Added new Supercar Gift: ${data.name}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to create Supercar gift:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteSupercar(id: string) {
+  await verifyAdminAccess();
+  try {
+    await db.delete(supercarGifts).where(eq(supercarGifts.id, id));
+    await logAdminAction("Catalog", `Deleted Supercar Gift ID: ${id}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to delete Supercar gift:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+// ==========================================
+// PROOFS
+// ==========================================
+export async function getProofs() {
+  await verifyAdminAccess();
+  try {
+    const allProofs = await db.select().from(proofs).orderBy(desc(proofs.createdAt));
+    return { success: true, proofs: allProofs };
+  } catch (error: any) {
+    console.error("Failed to fetch proofs:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createProof(data: { title?: string, imageUrl: string, month: string, year: string }) {
+  await verifyAdminAccess();
+  try {
+    await db.insert(proofs).values(data);
+    await logAdminAction("Catalog", `Added new Proof: ${data.title || 'Untitled'}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to create proof:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteProof(id: string) {
+  await verifyAdminAccess();
+  try {
+    await db.delete(proofs).where(eq(proofs.id, id));
+    await logAdminAction("Catalog", `Deleted Proof ID: ${id}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to delete proof:", error);
+    return { success: false, error: error.message };
+  }
+}

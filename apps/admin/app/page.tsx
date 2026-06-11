@@ -20,7 +20,11 @@ import {
   getFeedbackLogs, updateFeedbackStatus,
   getPaymentLinks, createPaymentLink, revokePaymentLink,
   getTransactionsRegistry,
-  getAdminActivityLogs, getActiveAdmins, addAdmin, revokeAdmin
+  getAdminActivityLogs, getActiveAdmins, addAdmin, revokeAdmin,
+  getUcPacks, createUcPack, deleteUcPack,
+  getXsuitGifts, createXsuitGift, deleteXsuitGift,
+  getSupercars, createSupercar, deleteSupercar,
+  getProofs, createProof, deleteProof
 } from "./actions";
 
 type ActiveTab = 
@@ -68,6 +72,12 @@ export default function AdminDashboard() {
   const [paymentLinksList, setPaymentLinksList] = useState<any[]>([]);
   const [activityLogsList, setActivityLogsList] = useState<any[]>([]);
   const [activeAdminsList, setActiveAdminsList] = useState<any[]>([]);
+  
+  // New Catalog States
+  const [ucPacksList, setUcPacksList] = useState<any[]>([]);
+  const [xsuitsList, setXsuitsList] = useState<any[]>([]);
+  const [supercarsList, setSupercarsList] = useState<any[]>([]);
+  const [proofsList, setProofsList] = useState<any[]>([]);
 
   // Description Factory State
   const [rawDescription, setRawDescription] = useState("");
@@ -103,7 +113,11 @@ export default function AdminDashboard() {
         payLinksRes,
         _txnRes,
         logsRes,
-        adminsRes
+        adminsRes,
+        ucRes,
+        xsuitRes,
+        supercarRes,
+        proofsRes
       ] = await Promise.all([
         getAdminMetrics(),
         getAdminProducts(),
@@ -112,7 +126,11 @@ export default function AdminDashboard() {
         getPaymentLinks(),
         getTransactionsRegistry(),
         getAdminActivityLogs(),
-        getActiveAdmins()
+        getActiveAdmins(),
+        getUcPacks(),
+        getXsuitGifts(),
+        getSupercars(),
+        getProofs()
       ]);
 
       if (metricsRes.success) setMetrics(metricsRes.metrics);
@@ -122,6 +140,10 @@ export default function AdminDashboard() {
       if (payLinksRes.success) setPaymentLinksList(payLinksRes.paymentLinks || []);
       if (logsRes.success) setActivityLogsList(logsRes.logs || []);
       if (adminsRes.success) setActiveAdminsList(adminsRes.admins || []);
+      if (ucRes.success) setUcPacksList(ucRes.ucPacks || []);
+      if (xsuitRes.success) setXsuitsList(xsuitRes.xsuitGifts || []);
+      if (supercarRes.success) setSupercarsList(supercarRes.supercars || []);
+      if (proofsRes.success) setProofsList(proofsRes.proofs || []);
     } catch (_err) {
       console.error("Failed to load dashboard details:", _err);
       toast.error("Failed to sync some dashboard items");
@@ -153,6 +175,12 @@ export default function AdminDashboard() {
     tag: "None",
     imageUrls: [] as string[]
   });
+
+  // --- CATALOG FORMS ---
+  const [ucPackForm, setUcPackForm] = useState({ ucAmount: "", marketPrice: "", offerPrice: "", bonusUc: "", method: "view_login", tag: "None" });
+  const [xsuitForm, setXsuitForm] = useState({ name: "", price: "", imageUrl: "", tag: "None" });
+  const [supercarForm, setSupercarForm] = useState({ name: "", price: "", type: "Sports", imageUrl: "", tag: "None" });
+  const [proofForm, setProofForm] = useState({ title: "", imageUrl: "", month: "", year: "" });
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -243,6 +271,109 @@ export default function AdminDashboard() {
     } catch (_err) {
       toast.error("Error updating feedback");
     }
+  };
+
+  // --- CATALOG HANDLERS ---
+  const handleUcPackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await createUcPack({
+        ucAmount: parseInt(ucPackForm.ucAmount.replace(/,/g, '')),
+        offerPrice: ucPackForm.offerPrice.replace(/,/g, ''),
+        marketPrice: ucPackForm.marketPrice ? ucPackForm.marketPrice.replace(/,/g, '') : undefined,
+        bonusUc: ucPackForm.bonusUc ? parseInt(ucPackForm.bonusUc.replace(/,/g, '')) : 0,
+        method: ucPackForm.method,
+        tag: ucPackForm.tag
+      });
+      if (res.success) {
+        toast.success("UC Pack added successfully!");
+        setUcPackForm({ ucAmount: "", marketPrice: "", offerPrice: "", bonusUc: "", method: "view_login", tag: "None" });
+        triggerRefresh();
+      } else toast.error(res.error || "Failed to add UC Pack");
+    } catch (_err) { toast.error("Error adding UC Pack"); }
+  };
+
+  const handleDeleteUcPack = async (id: string) => {
+    if (!confirm("Delete this UC Pack?")) return;
+    try {
+      const res = await deleteUcPack(id);
+      if (res.success) { toast.success("UC Pack deleted"); triggerRefresh(); }
+      else toast.error("Failed to delete UC Pack");
+    } catch (_err) { toast.error("Error deleting UC Pack"); }
+  };
+
+  const handleXsuitSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await createXsuitGift({
+        name: xsuitForm.name,
+        price: xsuitForm.price.replace(/,/g, ''),
+        imageUrl: xsuitForm.imageUrl,
+        tag: xsuitForm.tag
+      });
+      if (res.success) {
+        toast.success("X-Suit Gift added successfully!");
+        setXsuitForm({ name: "", price: "", imageUrl: "", tag: "None" });
+        triggerRefresh();
+      } else toast.error(res.error || "Failed to add X-Suit Gift");
+    } catch (_err) { toast.error("Error adding X-Suit Gift"); }
+  };
+
+  const handleDeleteXsuit = async (id: string) => {
+    if (!confirm("Delete this X-Suit Gift?")) return;
+    try {
+      const res = await deleteXsuitGift(id);
+      if (res.success) { toast.success("X-Suit deleted"); triggerRefresh(); }
+      else toast.error("Failed to delete X-Suit");
+    } catch (_err) { toast.error("Error deleting X-Suit"); }
+  };
+
+  const handleSupercarSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await createSupercar({
+        name: supercarForm.name,
+        price: supercarForm.price.replace(/,/g, ''),
+        type: supercarForm.type,
+        imageUrl: supercarForm.imageUrl,
+        tag: supercarForm.tag
+      });
+      if (res.success) {
+        toast.success("Supercar Gift added successfully!");
+        setSupercarForm({ name: "", price: "", type: "Sports", imageUrl: "", tag: "None" });
+        triggerRefresh();
+      } else toast.error(res.error || "Failed to add Supercar Gift");
+    } catch (_err) { toast.error("Error adding Supercar Gift"); }
+  };
+
+  const handleDeleteSupercar = async (id: string) => {
+    if (!confirm("Delete this Supercar Gift?")) return;
+    try {
+      const res = await deleteSupercar(id);
+      if (res.success) { toast.success("Supercar deleted"); triggerRefresh(); }
+      else toast.error("Failed to delete Supercar");
+    } catch (_err) { toast.error("Error deleting Supercar"); }
+  };
+
+  const handleProofSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await createProof(proofForm);
+      if (res.success) {
+        toast.success("Proof added successfully!");
+        setProofForm({ title: "", imageUrl: "", month: "", year: "" });
+        triggerRefresh();
+      } else toast.error(res.error || "Failed to add Proof");
+    } catch (_err) { toast.error("Error adding Proof"); }
+  };
+
+  const handleDeleteProof = async (id: string) => {
+    if (!confirm("Delete this Proof?")) return;
+    try {
+      const res = await deleteProof(id);
+      if (res.success) { toast.success("Proof deleted"); triggerRefresh(); }
+      else toast.error("Failed to delete Proof");
+    } catch (_err) { toast.error("Error deleting Proof"); }
   };
 
   // --- PAYMENT LINKS GENERATOR ---
@@ -859,82 +990,84 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-2 mb-6 text-white font-bold tracking-wider font-h">
                       <Link2 size={16} /> Add UC Pack
                     </div>
-                    <form className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4" onSubmit={handleUcPackSubmit}>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">UC AMOUNT</label>
-                        <input type="text" placeholder="e.g. 8,000 UC" className="input-field" />
+                        <input type="text" value={ucPackForm.ucAmount} onChange={e => setUcPackForm({ ...ucPackForm, ucAmount: e.target.value })} placeholder="e.g. 8,000 UC" className="input-field" required />
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">BONUS UC</label>
-                        <input type="text" placeholder="e.g. 60" className="input-field" />
+                        <input type="text" value={ucPackForm.bonusUc} onChange={e => setUcPackForm({ ...ucPackForm, bonusUc: e.target.value })} placeholder="e.g. 60" className="input-field" />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">SELLING PRICE (₹)</label>
-                          <input type="text" placeholder="e.g. 7,500" className="input-field" />
+                          <input type="text" value={ucPackForm.marketPrice} onChange={e => setUcPackForm({ ...ucPackForm, marketPrice: e.target.value })} placeholder="e.g. 7,500" className="input-field" />
                         </div>
                         <div>
                           <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">OUR OFFER PRICE (₹)</label>
-                          <input type="text" placeholder="e.g. 6,500" className="input-field" />
+                          <input type="text" value={ucPackForm.offerPrice} onChange={e => setUcPackForm({ ...ucPackForm, offerPrice: e.target.value })} placeholder="e.g. 6,500" className="input-field" required />
                         </div>
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PURCHASE METHOD</label>
-                        <select className="input-field">
-                          <option>View Login UC (Facebook / X)</option>
-                          <option>Player ID (In-Game)</option>
+                        <select className="input-field" value={ucPackForm.method} onChange={e => setUcPackForm({ ...ucPackForm, method: e.target.value })}>
+                          <option value="view_login">View Login UC (Facebook / X)</option>
+                          <option value="character_id">Player ID (In-Game)</option>
                         </select>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">STATUS</label>
-                          <select className="input-field">
-                            <option>Available</option>
-                            <option>Out of Stock</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PROMO TAG</label>
-                          <select className="input-field">
-                            <option>None</option>
-                            <option>Best Value</option>
-                            <option>Hot</option>
-                          </select>
-                        </div>
+                      <div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PROMO TAG</label>
+                        <select className="input-field" value={ucPackForm.tag} onChange={e => setUcPackForm({ ...ucPackForm, tag: e.target.value })}>
+                          <option value="None">None</option>
+                          <option value="Best Value">Best Value</option>
+                          <option value="Hot">Hot</option>
+                        </select>
                       </div>
-                      <button type="button" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE PACK</button>
+                      <button type="submit" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE PACK</button>
                     </form>
                   </div>
 
                   {/* UC PACK LIST */}
                   <div className="lg:col-span-2 glass-panel rounded-2xl flex flex-col overflow-hidden shadow-xl">
                     <div className="p-4 border-b border-border font-h text-sm font-bold tracking-wider text-white">
-                      UC Price List
+                      UC Price List ({ucPacksList.length})
                     </div>
                     <div className="p-6">
-                      <div className="bg-gold-dim border border-gold/20 shadow-[0_0_15px_rgba(255,215,0,0.05)] rounded-lg p-4 flex gap-3 text-[11px] text-gold font-mono">
+                      <div className="bg-gold-dim border border-gold/20 shadow-[0_0_15px_rgba(255,215,0,0.05)] rounded-lg p-4 flex gap-3 text-[11px] text-gold font-mono mb-6">
                         <ShieldAlert size={16} className="shrink-0" />
-                        Note: UC prices fluctuate based on market demand and availability. Update prices regularly to reflect the current market rate.
+                        Note: UC prices fluctuate based on market demand and availability. Update prices regularly.
                       </div>
                       
-                      <div className="mt-6 flex flex-col gap-4">
-                        <div className="p-4 border border-border rounded-xl flex items-center justify-between hover:bg-white/5 transition cursor-pointer">
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-black text-white font-h">8100</span>
-                              <span className="bg-gold text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">BEST VALUE</span>
-                              <span className="text-[10px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">🔑 View Login</span>
+                      <div className="flex flex-col gap-4">
+                        {ucPacksList.length === 0 ? (
+                          <span className="text-[10px] text-muted font-mono flex justify-center py-10">No UC Packs listed yet.</span>
+                        ) : (
+                          ucPacksList.map(pack => (
+                            <div key={pack.id} className="p-4 border border-border rounded-xl flex items-center justify-between hover:bg-white/5 transition">
+                              <div className="flex flex-col gap-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-black text-white font-h">{pack.ucAmount}</span>
+                                  {pack.tag !== "None" && (
+                                    <span className="bg-gold text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">{pack.tag}</span>
+                                  )}
+                                  <span className="text-[10px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                                    {pack.method === "character_id" ? "🎮 Player ID" : "🔑 View Login"}
+                                  </span>
+                                </div>
+                                {pack.marketPrice && (
+                                  <span className="text-[10px] text-muted">Market: <span className="line-through">₹{pack.marketPrice}</span></span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-4">
+                                <span className="text-green-500 font-black font-h text-lg tracking-wider">₹{pack.offerPrice}</span>
+                                <div className="flex gap-2">
+                                  <button onClick={() => handleDeleteUcPack(pack.id)} className="text-red-400 hover:text-white transition"><Trash2 size={14}/></button>
+                                </div>
+                              </div>
                             </div>
-                            <span className="text-[10px] text-muted">Market: <span className="line-through">₹7500</span></span>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-green-500 font-black font-h text-lg tracking-wider">₹6500</span>
-                            <div className="flex gap-2">
-                              <button className="text-gold hover:text-white transition"><Edit size={14}/></button>
-                              <button className="text-red-400 hover:text-white transition"><Trash2 size={14}/></button>
-                            </div>
-                          </div>
-                        </div>
+                          ))
+                        )}
                       </div>
                     </div>
                   </div>
@@ -951,48 +1084,64 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-2 mb-6 text-white font-bold tracking-wider font-h">
                       <Zap size={16} /> Add Xsuit Gift
                     </div>
-                    <form className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4" onSubmit={handleXsuitSubmit}>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">XSUIT NAME</label>
-                        <input type="text" placeholder="e.g. Poseidon X-Suit" className="input-field" />
+                        <input type="text" value={xsuitForm.name} onChange={e => setXsuitForm({ ...xsuitForm, name: e.target.value })} placeholder="e.g. Poseidon X-Suit" className="input-field" required />
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">OFFER PRICE (₹)</label>
-                        <input type="text" placeholder="e.g. 15000" className="input-field" />
+                        <input type="text" value={xsuitForm.price} onChange={e => setXsuitForm({ ...xsuitForm, price: e.target.value })} placeholder="e.g. 15000" className="input-field" required />
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PROMO TAG</label>
-                        <select className="input-field">
-                          <option>None</option>
-                          <option>Hot</option>
-                          <option>Sale</option>
+                        <select className="input-field" value={xsuitForm.tag} onChange={e => setXsuitForm({ ...xsuitForm, tag: e.target.value })}>
+                          <option value="None">None</option>
+                          <option value="Hot">Hot</option>
+                          <option value="Sale">Sale</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE SOURCE</label>
-                        <div className="flex gap-4 mb-2">
-                          <label className="flex items-center gap-2 text-[11px] text-gold cursor-pointer">
-                            <input type="radio" name="xsuit_img_src" defaultChecked className="accent-gold" /> File Upload
-                          </label>
-                          <label className="flex items-center gap-2 text-[11px] text-white cursor-pointer">
-                            <input type="radio" name="xsuit_img_src" className="accent-gold" /> Drive Image ID
-                          </label>
-                        </div>
-                        <div className="border border-dashed border-border rounded-lg p-6 flex items-center justify-center text-[10px] text-muted cursor-pointer hover:border-gold hover:text-gold transition">
-                          Click to Upload Xsuit Image
-                        </div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE URL</label>
+                        <input type="text" value={xsuitForm.imageUrl} onChange={e => setXsuitForm({ ...xsuitForm, imageUrl: e.target.value })} placeholder="https://..." className="input-field" />
                       </div>
-                      <button type="button" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE XSUIT</button>
+                      <button type="submit" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE XSUIT</button>
                     </form>
                   </div>
 
                   {/* XSUIT LIST */}
                   <div className="lg:col-span-2 glass-panel rounded-2xl flex flex-col overflow-hidden shadow-xl">
                     <div className="p-4 border-b border-border font-h text-sm font-bold tracking-wider text-white">
-                      Xsuit Gift List
+                      Xsuit Gift List ({xsuitsList.length})
                     </div>
-                    <div className="p-6 flex items-center justify-center h-full min-h-100">
-                      <span className="text-[10px] text-muted font-mono">No Xsuit Gifts listed yet.</span>
+                    <div className="p-6 h-full">
+                      {xsuitsList.length === 0 ? (
+                        <div className="flex items-center justify-center min-h-[100px]">
+                          <span className="text-[10px] text-muted font-mono">No Xsuit Gifts listed yet.</span>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {xsuitsList.map(xsuit => (
+                            <div key={xsuit.id} className="p-4 border border-border rounded-xl flex items-center justify-between hover:bg-white/5 transition">
+                              <div className="flex items-center gap-3">
+                                {xsuit.imageUrl ? (
+                                  <img src={xsuit.imageUrl} alt={xsuit.name} className="w-10 h-10 rounded-lg object-cover" />
+                                ) : (
+                                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center"><Zap size={16} className="text-muted"/></div>
+                                )}
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-white text-sm">{xsuit.name}</span>
+                                  {xsuit.tag !== "None" && <span className="text-gold text-[10px] uppercase font-bold">{xsuit.tag}</span>}
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-end gap-1">
+                                <span className="text-green-500 font-bold">₹{xsuit.price}</span>
+                                <button onClick={() => handleDeleteXsuit(xsuit.id)} className="text-red-400 hover:text-white transition mt-1"><Trash2 size={14}/></button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1008,108 +1157,153 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-2 mb-6 text-white font-bold tracking-wider font-h">
                       <Gamepad2 size={16} /> Add Supercar Gift
                     </div>
-                    <form className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4" onSubmit={handleSupercarSubmit}>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">SUPERCAR NAME</label>
-                        <input type="text" placeholder="e.g. Lamborghini Aventador" className="input-field" />
+                        <input type="text" value={supercarForm.name} onChange={e => setSupercarForm({ ...supercarForm, name: e.target.value })} placeholder="e.g. Lamborghini Aventador" className="input-field" required />
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">OFFER PRICE (₹)</label>
-                        <input type="text" placeholder="e.g. 15000" className="input-field" />
+                        <input type="text" value={supercarForm.price} onChange={e => setSupercarForm({ ...supercarForm, price: e.target.value })} placeholder="e.g. 15000" className="input-field" required />
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PROMO TAG</label>
-                        <select className="input-field">
-                          <option>None</option>
-                          <option>Hot</option>
-                          <option>Sale</option>
+                        <select className="input-field" value={supercarForm.tag} onChange={e => setSupercarForm({ ...supercarForm, tag: e.target.value })}>
+                          <option value="None">None</option>
+                          <option value="Hot">Hot</option>
+                          <option value="Sale">Sale</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">CARD TYPE</label>
-                        <select className="input-field">
-                          <option>One-Card</option>
-                          <option>Three-Card</option>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">CAR TYPE</label>
+                        <select className="input-field" value={supercarForm.type} onChange={e => setSupercarForm({ ...supercarForm, type: e.target.value })}>
+                          <option value="Sports">Sports</option>
+                          <option value="SUV">SUV</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE SOURCE</label>
-                        <div className="flex gap-4 mb-2">
-                          <label className="flex items-center gap-2 text-[11px] text-gold cursor-pointer">
-                            <input type="radio" name="car_img_src" defaultChecked className="accent-gold" /> File Upload
-                          </label>
-                          <label className="flex items-center gap-2 text-[11px] text-white cursor-pointer">
-                            <input type="radio" name="car_img_src" className="accent-gold" /> Drive Image ID
-                          </label>
-                        </div>
-                        <div className="border border-dashed border-border rounded-lg p-6 flex items-center justify-center text-[10px] text-muted cursor-pointer hover:border-gold hover:text-gold transition">
-                          Click to Upload Supercar Image
-                        </div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE URL</label>
+                        <input type="text" value={supercarForm.imageUrl} onChange={e => setSupercarForm({ ...supercarForm, imageUrl: e.target.value })} placeholder="https://..." className="input-field" />
                       </div>
-                      <button type="button" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE CAR</button>
+                      <button type="submit" className="btn btn-gold w-full mt-2 justify-center py-3">SAVE CAR</button>
                     </form>
                   </div>
 
                   {/* CAR LIST */}
                   <div className="lg:col-span-2 glass-panel rounded-2xl flex flex-col overflow-hidden shadow-xl">
                     <div className="p-4 border-b border-border font-h text-sm font-bold tracking-wider text-white">
-                      Supercar Gift List
+                      Supercar Gift List ({supercarsList.length})
                     </div>
-                    <div className="p-6 flex items-center justify-center h-full min-h-100">
-                      <span className="text-[10px] text-muted font-mono">No Supercars listed yet.</span>
+                    <div className="p-6 h-full">
+                      {supercarsList.length === 0 ? (
+                        <div className="flex items-center justify-center min-h-[100px]">
+                          <span className="text-[10px] text-muted font-mono">No Supercars listed yet.</span>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {supercarsList.map(car => (
+                            <div key={car.id} className="p-4 border border-border rounded-xl flex items-center justify-between hover:bg-white/5 transition">
+                              <div className="flex items-center gap-3">
+                                {car.imageUrl ? (
+                                  <img src={car.imageUrl} alt={car.name} className="w-10 h-10 rounded-lg object-cover" />
+                                ) : (
+                                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center"><Car size={16} className="text-muted"/></div>
+                                )}
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-white text-sm">{car.name}</span>
+                                  {car.tag !== "None" && <span className="text-gold text-[10px] uppercase font-bold">{car.tag}</span>}
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-end gap-1">
+                                <span className="text-green-500 font-bold">₹{car.price}</span>
+                                <button onClick={() => handleDeleteSupercar(car.id)} className="text-red-400 hover:text-white transition mt-1"><Trash2 size={14}/></button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               )}
+
 
               {/* ==============================================================
                   TAB: PROOFS
                   ============================================================== */}
               {activeTab === "proofs" && (
                 <div className="flex flex-col gap-6">
-                  <div className="glass-panel rounded-2xl p-6 shadow-xl">
+                  <form className="glass-panel rounded-2xl p-6 shadow-xl" onSubmit={handleProofSubmit}>
                     <div className="flex items-center gap-2 mb-6 text-white font-bold tracking-wider text-sm font-h">
                       <Camera size={16} /> Upload New Proof
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                      <div className="col-span-1 lg:col-span-1">
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                      <div className="col-span-1">
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">TITLE</label>
-                        <input type="text" placeholder="e.g. Payment Proof, Deal Feedback" className="input-field" />
+                        <input type="text" value={proofForm.title} onChange={e => setProofForm({ ...proofForm, title: e.target.value })} placeholder="e.g. Payment Proof" className="input-field" required />
                       </div>
                       <div className="col-span-1">
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">MONTH</label>
-                        <select className="input-field"><option>June</option></select>
+                        <select className="input-field" value={proofForm.month} onChange={e => setProofForm({ ...proofForm, month: e.target.value })} required>
+                          <option value="">Select Month</option>
+                          <option value="January">January</option>
+                          <option value="February">February</option>
+                          <option value="March">March</option>
+                          <option value="April">April</option>
+                          <option value="May">May</option>
+                          <option value="June">June</option>
+                          <option value="July">July</option>
+                          <option value="August">August</option>
+                          <option value="September">September</option>
+                          <option value="October">October</option>
+                          <option value="November">November</option>
+                          <option value="December">December</option>
+                        </select>
                       </div>
                       <div className="col-span-1">
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">YEAR</label>
-                        <select className="input-field"><option>2026</option></select>
+                        <select className="input-field" value={proofForm.year} onChange={e => setProofForm({ ...proofForm, year: e.target.value })} required>
+                          <option value="">Select Year</option>
+                          <option value="2025">2025</option>
+                          <option value="2026">2026</option>
+                          <option value="2027">2027</option>
+                        </select>
                       </div>
                       <div className="col-span-1">
-                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE SOURCE</label>
-                        <div className="flex gap-4 mb-2">
-                          <label className="flex items-center gap-2 text-[11px] text-gold cursor-pointer">
-                            <input type="radio" name="proof_img_src" defaultChecked className="accent-gold" /> File Upload
-                          </label>
-                          <label className="flex items-center gap-2 text-[11px] text-muted cursor-pointer">
-                            <input type="radio" name="proof_img_src" className="accent-gold" /> Drive Image ID
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-span-1">
-                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE INPUT</label>
-                        <div className="border border-dashed border-border rounded-lg p-3 flex items-center justify-center text-[10px] text-muted cursor-pointer hover:border-gold hover:text-gold transition h-10.5">
-                          Click to choose file
-                        </div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">IMAGE URL</label>
+                        <input type="text" value={proofForm.imageUrl} onChange={e => setProofForm({ ...proofForm, imageUrl: e.target.value })} placeholder="https://..." className="input-field" required />
                       </div>
                     </div>
                     <div className="mt-6">
-                      <button className="btn btn-gold w-48 justify-center py-3 text-[10px]">UPLOAD PROOF</button>
+                      <button type="submit" className="btn btn-gold w-48 justify-center py-3 text-[10px]">UPLOAD PROOF</button>
                     </div>
-                  </div>
+                  </form>
 
-                  <div className="glass-panel rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center min-h-75">
-                    <Camera size={48} className="text-white/5 mb-4" />
-                    <p className="text-[11px] text-muted font-mono">No proofs uploaded yet. Use the upload panel above to get started.</p>
+                  <div className="glass-panel rounded-2xl p-6 shadow-xl flex flex-col">
+                    <div className="mb-6 border-b border-border pb-4 font-h text-sm font-bold tracking-wider text-white">
+                      Proof Gallery ({proofsList.length})
+                    </div>
+                    {proofsList.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center min-h-75">
+                        <Camera size={48} className="text-white/5 mb-4" />
+                        <p className="text-[11px] text-muted font-mono">No proofs uploaded yet.</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        {proofsList.map(proof => (
+                          <div key={proof.id} className="relative group rounded-xl overflow-hidden border border-border">
+                            <img src={proof.imageUrl} alt={proof.title} className="w-full h-32 object-cover" />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                              <button onClick={() => handleDeleteProof(proof.id)} className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-400 transition"><Trash2 size={16}/></button>
+                            </div>
+                            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+                              <p className="text-[10px] text-white font-bold truncate">{proof.title}</p>
+                              <p className="text-[9px] text-gold">{proof.month} {proof.year}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
