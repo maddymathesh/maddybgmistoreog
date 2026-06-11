@@ -548,7 +548,7 @@ export default function AdminDashboard() {
         <ShieldAlert size={48} className="text-gold" />
         <h1 className="font-h text-2xl font-black">Authentication Required</h1>
         <p className="text-sm text-muted font-mono">Please sign in to access the Admin Panel.</p>
-        <Link href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
+        <Link href="/login" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
       </div>
     );
   }
@@ -618,7 +618,7 @@ export default function AdminDashboard() {
         <div className="p-6 border-t border-white/5 flex flex-col gap-3">
 
           <div className="w-full flex items-center justify-between bg-black/20 p-2 rounded-lg border border-white/5">
-            <UserButton afterSignOutUrl="/sign-in" />
+            <UserButton afterSignOutUrl="/login" />
             <span className="text-[10px] text-muted font-bold">LOGGED IN</span>
           </div>
         </div>
@@ -1787,7 +1787,7 @@ export default function AdminDashboard() {
                     
                     <div className="mt-6 bg-blue-500/5 border border-blue-500/10 rounded-xl p-4 text-[10px] text-muted leading-relaxed">
                       <div className="font-bold text-blue-400 mb-1 flex items-center gap-1"><ShieldAlert size={12} /> Security Note:</div>
-                      Adding an email creates/assigns a verified <strong className="text-white">admin custom claim</strong> in Firebase Auth. The new administrator can log in directly and manage all aspects of the transaction panel securely.
+                      Adding an email creates/assigns a verified <strong className="text-white">admin custom claim</strong> in Clerk Auth. The new administrator can log in directly and manage all aspects of the transaction panel securely.
                     </div>
                   </div>
 
@@ -1821,9 +1821,15 @@ export default function AdminDashboard() {
                               </td>
                               <td className="py-4 px-4 text-[10px] text-muted font-mono">{admin.addedDate}</td>
                               <td className="py-4 px-4 text-right">
-                                <button onClick={() => handleRevokeAdmin(admin.id)} className="text-[9px] font-bold border border-red-500/20 text-red-400 px-4 py-1.5 rounded hover:bg-red-500 hover:text-white transition uppercase tracking-wider">
-                                  REVOKE
-                                </button>
+                                {admin.email === "maddybgmistoreog@gmail.com" ? (
+                                  <span className="text-[9px] font-bold text-red-900 px-4 py-1.5 uppercase tracking-wider cursor-not-allowed">
+                                    REVOKE
+                                  </span>
+                                ) : (
+                                  <button onClick={() => handleRevokeAdmin(admin.id)} className="text-[9px] font-bold border border-red-500/20 text-red-400 px-4 py-1.5 rounded hover:bg-red-500 hover:text-white transition uppercase tracking-wider">
+                                    REVOKE
+                                  </button>
+                                )}
                               </td>
                             </tr>
                           ))}

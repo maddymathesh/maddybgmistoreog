@@ -72,7 +72,7 @@ export default function TransactionsLayout() {
         <ShieldAlert size={48} style={{ color: 'var(--color-gold)' }} />
         <h1 style={{ fontFamily: 'var(--font-h)', fontSize: '24px', fontWeight: 900 }}>Authentication Required</h1>
         <p style={{ fontSize: '14px', color: 'var(--color-muted)', fontFamily: 'monospace' }}>Please sign in to access the Transactions Panel.</p>
-        <Link href="/sign-in" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
+        <Link href="/login" className="btn btn-gold px-6 py-2.5 text-sm">Sign In</Link>
       </div>
     );
   }
