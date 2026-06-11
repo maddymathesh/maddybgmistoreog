@@ -155,10 +155,10 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="glass-panel p-5 rounded-2xl relative overflow-hidden group hover:border-[var(--color-border-gold)] transition-colors duration-300"
+              className="glass-panel p-5 rounded-2xl relative overflow-hidden group transition-colors duration-300 border border-white/5"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-[var(--color-bg2)] border border-[var(--color-border-gold)] text-[var(--color-gold)] group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_var(--color-gold-dim)]">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-white/5 text-[var(--color-gold)] group-hover:scale-110 transition-transform duration-300">
                   <Icon size={20} />
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Glowing SVG Area Line Chart */}
-        <div className="glass-panel p-6 rounded-2xl flex flex-col">
+        <div className="glass-panel p-6 rounded-2xl flex flex-col border border-white/5">
           <h3 className="text-[15px] font-bold mb-6 text-white flex items-center gap-2 font-[var(--font-h)] tracking-wide">
             <TrendingUp size={18} className="text-[var(--color-gold)]" /> Revenue & Net Profit Trend
           </h3>
@@ -242,7 +242,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity List */}
-        <div className="glass-panel p-6 rounded-2xl flex flex-col">
+        <div className="glass-panel p-6 rounded-2xl flex flex-col border border-white/5">
           <h3 className="text-[15px] font-bold mb-6 text-white flex items-center gap-2 font-[var(--font-h)] tracking-wide">
             <Activity size={18} className="text-[var(--color-gold)]" /> Live Feed (Recent Transactions)
           </h3>
@@ -250,7 +250,7 @@ export default function Dashboard() {
             {data.slice(0, 6).map((tx, idx) => (
               <div key={idx} className="flex items-center justify-between p-3.5 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--color-bg2)] border border-[var(--color-border-gold)] flex items-center justify-center text-[10.5px] font-black text-[var(--color-gold)] tracking-wider">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[10.5px] font-black text-[var(--color-gold)] tracking-wider">
                     {tx.transaction_type === 'Account' ? 'ACC' : tx.transaction_type === 'XSuit' ? 'XSU' : tx.transaction_type === 'Supercar' ? 'CAR' : 'UC'}
                   </div>
                   <div>

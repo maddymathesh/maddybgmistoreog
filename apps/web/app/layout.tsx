@@ -47,7 +47,7 @@ export default function RootLayout({
           }}
         >
           <Navbar />
-          <div className="pt-[92px] min-h-[calc(100vh-92px)] flex flex-col justify-between">
+          <div className="pt-[64px] min-h-[calc(100vh-64px)] flex flex-col justify-between">
             <main className="flex-grow">{children}</main>
             <Footer />
           </div>

@@ -299,26 +299,22 @@ export default function TermsConditions() {
                   key={sec.id}
                   id={sec.id}
                   style={{
-                    background: "#131722",
-                    border: "1px solid var(--color-border-gold)",
-                    borderRadius: "20px",
-                    padding: "30px",
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-                    transition: "border-color 0.3s ease, transform 0.3s ease",
+                    paddingBottom: "40px",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
                   }}
-                  className="terms-card"
+                  className="terms-section"
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
                     <div 
                       style={{ 
-                        width: "42px", 
-                        height: "42px", 
-                        borderRadius: "12px", 
-                        background: "rgba(255, 215, 0, 0.08)", 
+                        width: "38px", 
+                        height: "38px", 
+                        borderRadius: "10px", 
+                        background: "rgba(255, 255, 255, 0.03)", 
                         display: "flex", 
                         alignItems: "center", 
                         justifyContent: "center",
-                        border: "1px solid rgba(255, 215, 0, 0.2)",
+                        border: "1px solid rgba(255, 255, 255, 0.06)",
                         flexShrink: 0
                       }}
                     >
@@ -394,9 +390,8 @@ export default function TermsConditions() {
             background: rgba(255, 215, 0, 0.04) !important;
           }
           
-          .terms-card:hover {
-            border-color: rgba(255, 215, 0, 0.4) !important;
-            transform: translateY(-2px);
+          .terms-section:last-child {
+            border-bottom: none !important;
           }
           
           @media (min-width: 992px) {

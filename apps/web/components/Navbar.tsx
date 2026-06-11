@@ -106,11 +106,11 @@ export default function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-[1000] transition-all duration-300"
       style={{
-        background: scrolled ? "rgba(8, 10, 15, 0.75)" : "rgba(8, 10, 15, 0.4)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
-        borderBottom: scrolled ? "1px solid rgba(255, 255, 255, 0.08)" : "1px solid transparent",
-        boxShadow: scrolled ? "0 4px 30px rgba(0, 0, 0, 0.3)" : "none",
+        background: scrolled ? "rgba(8, 10, 15, 0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(20px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(255, 255, 255, 0.04)" : "1px solid transparent",
+        boxShadow: scrolled ? "0 10px 30px rgba(0, 0, 0, 0.2)" : "none",
       }}
     >
       {/* ── Main Nav Bar ── */}
@@ -222,149 +222,9 @@ export default function Navbar() {
           </SignedOut>
         </ul>
 
-        {/* Mobile Hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          className="flex lg:hidden flex-col items-center justify-center w-[42px] h-[42px] rounded-xl cursor-pointer gap-[5px] flex-shrink-0 transition-colors border"
-          style={{
-            background: mobileOpen ? "rgba(255,215,0,0.15)" : "rgba(255,255,255,0.06)",
-            borderColor: "rgba(255,215,0,0.2)",
-          }}
-        >
-          {mobileOpen ? (
-            <X size={20} className="text-gold" />
-          ) : (
-            <Menu size={20} className="text-gold" />
-          )}
-        </button>
       </nav>
 
 
-
-
-      {/* ── Mobile Overlay Backdrop ── */}
-      {mobileOpen && (
-        <div
-          onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 top-[92px] bg-black/60 z-[997]"
-        />
-      )}
-
-      {/* ── Mobile Slide-Down Menu ── */}
-      <div
-        className="fixed left-0 right-0 z-[998] bg-[#080a0f]/95 backdrop-blur-[24px] border-b border-white/5 overflow-y-auto transition-[max-height] duration-300 ease-in-out"
-        style={{
-          top: "92px",
-          maxHeight: mobileOpen ? "calc(100vh - 92px)" : "0",
-        }}
-      >
-        <div className="px-4 py-3 pb-6 flex flex-col gap-1">
-          {navLinks.map((l) => (
-            <div key={l.label || l.to}>
-              {l.subLinks ? (
-                <>
-                  <button
-                    onClick={() =>
-                      setMobileExpanded((p) => ({ ...p, [l.label]: !p[l.label] }))
-                    }
-                    className={`${mobileLinkStyle} w-full text-left bg-none flex justify-between items-center`}
-                  >
-                    {l.label}
-                    <ChevronDown
-                      size={18}
-                      className={`text-gray-400 transition-transform duration-200 ${
-                        mobileExpanded[l.label] ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  <div
-                    className="overflow-hidden transition-all duration-300 bg-white/5 rounded-xl mt-1 mx-2"
-                    style={{
-                      maxHeight: mobileExpanded[l.label] ? "200px" : "0",
-                    }}
-                  >
-                    {l.subLinks.map((s) => (
-                      <Link
-                        key={s.to}
-                        href={s.to}
-                        className={`${mobileLinkStyle} text-[14px] px-6 py-3 ${
-                          pathname === s.to ? "text-white bg-white/10" : "text-gray-400"
-                        }`}
-                      >
-                        {s.label}
-                      </Link>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <Link
-                  href={l.to}
-                  className={`${mobileLinkStyle} ${
-                    pathname === l.to ? "text-white bg-white/10" : ""
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              )}
-            </div>
-          ))}
-
-          {isAdmin && (
-            <>
-              <a
-                href={process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.maddybgmistore.in"}
-                target="_blank"
-                rel="noreferrer"
-                className={`${mobileLinkStyle} text-white mt-2 border border-white/10 bg-white/5 text-center`}
-              >
-                Admin Dashboard
-              </a>
-              <a
-                href={process.env.NODE_ENV === "development" ? "http://localhost:3001/transactions" : "https://admin.maddybgmistore.in/transactions"}
-                target="_blank"
-                rel="noreferrer"
-                className={`${mobileLinkStyle} text-white mt-2 border border-white/10 bg-white/5 text-center`}
-              >
-                Transactions Panel
-              </a>
-            </>
-          )}
-
-          <hr className="border-t border-white/10 my-3" />
-
-          {/* Auth Section */}
-          <SignedIn>
-            <div className="flex items-center gap-3 px-4 py-2">
-              <UserButton afterSignOutUrl="/" />
-              <div className="text-left leading-none">
-                <div className="text-sm font-bold text-white">
-                  {user?.firstName || user?.username}
-                </div>
-                <div className="text-[10px] text-gold uppercase font-bold tracking-[0.5px]">
-                  {displayRole}
-                </div>
-              </div>
-            </div>
-          </SignedIn>
-
-          <SignedOut>
-            <div className="flex flex-col gap-2 mt-2">
-              <SignInButton mode="modal">
-                <button className="btn btn-outline w-full text-center py-3 font-bold rounded-[10px] justify-center">
-                  Login
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="btn btn-gold w-full text-center py-3 font-bold rounded-[10px] justify-center">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </div>
-          </SignedOut>
-        </div>
-      </div>
 
 
     </header>
