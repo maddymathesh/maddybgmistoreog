@@ -30,6 +30,30 @@ interface City {
   transitCoords: TransitCoords;
 }
 
+const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    width={size} 
+    height={size} 
+    fill="currentColor"
+    style={{ display: "inline-block", verticalAlign: "middle" }}
+  >
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.46h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+const TelegramIcon = ({ size = 16 }: { size?: number }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    width={size} 
+    height={size} 
+    fill="currentColor"
+    style={{ display: "inline-block", verticalAlign: "middle" }}
+  >
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.38-.49 1.04-.74 4.07-1.77 6.79-2.93 8.16-3.5 3.89-1.61 4.7-1.89 5.23-1.9.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.16-.03.25z" />
+  </svg>
+);
+
 export default function Exchange() {
   const [activeOption, setActiveOption] = useState<number>(0); // 0 = Exchange Upgrade, 1 = Exchange Downgrade
   const [activeTrustCard, setActiveTrustCard] = useState<number | null>(null);
@@ -255,10 +279,9 @@ export default function Exchange() {
             <h1 style={{
               fontFamily: "var(--font-h)", fontSize: "clamp(34px,6vw,72px)",
               fontWeight: 900, lineHeight: 1.1, marginBottom: "18px",
-              textShadow: "0 2px 25px rgba(0,0,0,0.7)",
-            }} className="uppercase">
+            }} className="uppercase drop-shadow-2xl">
               Exchange Your BGMI Account<br />
-              <span className="g">With Complete Security</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">With Complete Security</span>
             </h1>
             <p style={{
               color: "rgba(234,234,234,0.85)", fontSize: "clamp(14px,1.8vw,19px)",
@@ -274,7 +297,7 @@ export default function Exchange() {
                   document.getElementById("exchange-options")?.scrollIntoView({ behavior: "smooth" });
                 }}
                 className="btn btn-gold">
-                <ArrowUpRight size={16} /> Upgrade Pathway
+                <ArrowUpRight size={16} /> Exchange & Upgrade
               </button>
               <button 
                 onClick={() => {
@@ -283,7 +306,7 @@ export default function Exchange() {
                 }}
                 className="btn btn-outline"
                 style={{ borderColor: "rgba(255,255,255,0.15)", color: "#fff" }}>
-                <ArrowDownRight size={16} /> Downgrade Pathway
+                <ArrowDownRight size={16} /> Exchange & Downgrade
               </button>
             </div>
           </div>
@@ -461,9 +484,12 @@ export default function Exchange() {
                 </ul>
               </div>
 
-              <div className="cta-container">
-                <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Upgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn btn-gold" style={{ width: "100%", height: "52px", justifyContent: "center", gap: "8px" }} onClick={(e) => e.stopPropagation()}>
-                  <MessageCircle size={18} /> Request Upgrade →
+              <div className="cta-container" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Upgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn" style={{ width: "100%", height: "48px", justifyContent: "center", gap: "8px", background: "linear-gradient(135deg, #25D366, #128C7E)", color: "#000", border: "none", fontWeight: 800 }} onClick={(e) => e.stopPropagation()}>
+                  <WhatsAppIcon size={16} /> Request Upgrade on WhatsApp
+                </a>
+                <a href="https://t.me/MBSxMADDY17?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Upgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn" style={{ width: "100%", height: "48px", justifyContent: "center", gap: "8px", background: "linear-gradient(135deg, #229ED9, #0088cc)", color: "#000", border: "none", fontWeight: 800 }} onClick={(e) => e.stopPropagation()}>
+                  <TelegramIcon size={16} /> Request Upgrade on Telegram
                 </a>
               </div>
             </div>
@@ -522,9 +548,12 @@ export default function Exchange() {
                 </ul>
               </div>
 
-              <div className="cta-container">
-                <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Downgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn btn-green" style={{ width: "100%", height: "52px", justifyContent: "center", gap: "8px" }} onClick={(e) => e.stopPropagation()}>
-                  <MessageCircle size={18} /> Request Downgrade →
+              <div className="cta-container" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Downgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn" style={{ width: "100%", height: "48px", justifyContent: "center", gap: "8px", background: "linear-gradient(135deg, #25D366, #128C7E)", color: "#000", border: "none", fontWeight: 800 }} onClick={(e) => e.stopPropagation()}>
+                  <WhatsAppIcon size={16} /> Request Downgrade on WhatsApp
+                </a>
+                <a href="https://t.me/MBSxMADDY17?text=Hi%20Maddy!%20I%20want%20to%20do%20an%20Exchange%20Downgrade%20of%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn" style={{ width: "100%", height: "48px", justifyContent: "center", gap: "8px", background: "linear-gradient(135deg, #229ED9, #0088cc)", color: "#000", border: "none", fontWeight: 800 }} onClick={(e) => e.stopPropagation()}>
+                  <TelegramIcon size={16} /> Request Downgrade on Telegram
                 </a>
               </div>
             </div>
@@ -567,7 +596,7 @@ export default function Exchange() {
                   transition: "all 0.25s"
                 }}
               >
-                <ArrowUpRight size={14} /> Upgrade Pathway
+                <ArrowUpRight size={14} /> Exchange & Upgrade
               </button>
               <button 
                 onClick={() => setActiveOption(1)}
@@ -587,7 +616,7 @@ export default function Exchange() {
                   transition: "all 0.25s"
                 }}
               >
-                <ArrowDownRight size={14} /> Downgrade Pathway
+                <ArrowDownRight size={14} /> Exchange & Downgrade
               </button>
             </div>
 
@@ -1066,11 +1095,6 @@ export default function Exchange() {
             ))}
           </div>
 
-          <div style={{ textAlign: "center" }}>
-            <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20have%20questions%20about%20exchanging%20my%20BGMI%20account." target="_blank" rel="noreferrer" className="btn btn-green" style={{ display: "inline-flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
-              <MessageCircle size={15} /> WhatsApp Support
-            </a>
-          </div>
         </section>
 
         {/* HANDOVER & UNLINK EDUCATION HUB */}
@@ -1336,48 +1360,23 @@ export default function Exchange() {
               return (
                 <div 
                   key={idx}
-                  style={{
-                    background: "#131722",
-                    border: isOpen ? "1px solid var(--color-gold)" : "1px solid var(--color-border)",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    transition: "all 0.3s ease",
-                    boxShadow: isOpen ? "0 10px 25px rgba(255,215,0,0.03)" : "none"
-                  }}
+                  className={`rounded-xl border overflow-hidden transition-all duration-300 ${isOpen ? "border-yellow-500/30 bg-[#080a0e]" : "border-white/5 bg-[#111520] hover:border-white/10"}`}
                 >
-                  <button
+                  <button 
                     onClick={() => setActiveFaq(isOpen ? null : idx)}
-                    style={{
-                      width: "100%",
-                      padding: "20px 24px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      color: "#fff",
-                      fontSize: "16px",
-                      fontWeight: 600,
-                      textAlign: "left",
-                      fontFamily: "var(--font-h)",
-                      letterSpacing: "0.5px",
-                      background: "transparent",
-                      border: "none",
-                      cursor: "pointer"
-                    }}
+                    className="w-full flex justify-between items-center p-5 bg-transparent border-none text-left cursor-pointer"
                   >
-                    <span>{faq.q}</span>
-                    {isOpen ? <ChevronUp size={18} style={{ color: "var(--color-gold)" }} /> : <ChevronDown size={18} style={{ color: "var(--color-muted)" }} />}
+                    <strong className={`text-sm font-bold tracking-wide ${isOpen ? "text-yellow-400" : "text-white"}`}>{faq.q}</strong>
+                    {isOpen ? <ChevronUp size={16} className="text-yellow-500 shrink-0 ml-4" /> : <ChevronDown size={16} className="text-muted shrink-0 ml-4" />}
                   </button>
-                  {isOpen && (
-                    <div style={{
-                      padding: "0 24px 20px",
-                      color: "var(--color-muted)",
-                      fontSize: "14px",
-                      lineHeight: "1.6",
-                      borderTop: "1px solid rgba(255,255,255,0.05)"
-                    }}>
+                  
+                  <div 
+                    className={`transition-all duration-300 ease-in-out ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  >
+                    <div className="p-5 pt-0 text-muted text-xs leading-relaxed border-t border-white/5 mx-5 mt-2">
                       {faq.a}
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}

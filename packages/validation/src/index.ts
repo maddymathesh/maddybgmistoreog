@@ -6,7 +6,7 @@ export const ProductSchema = z.object({
   description: z.string().optional(),
   price: z.preprocess((val) => Number(val), z.number().positive("Price must be a positive number")),
   category: z.enum(["Budget", "Mid Range", "Premium", "Ultra Premium"]).default("Budget"),
-  status: z.enum(["available", "sold"]).default("available"),
+  status: z.enum(["available", "coming_soon", "reserved", "on_hold", "sold", "ready_to_exchange"]).default("available"),
   youtubeUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   primaryLogin: z.string().min(1, "Primary login type is required"),
   secondaryLogin: z.string().optional().or(z.literal("")),

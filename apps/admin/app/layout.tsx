@@ -32,7 +32,7 @@ export default function RootLayout({
         }
       }}
     >
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className="dark">
         <body suppressHydrationWarning>
           {children}
           <Toaster richColors theme="dark" position="top-right" />

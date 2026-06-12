@@ -11,6 +11,30 @@ import {
 } from "lucide-react";
 import CountUp from "../../components/CountUp";
 
+const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    width={size} 
+    height={size} 
+    fill="currentColor"
+    style={{ display: "inline-block", verticalAlign: "middle" }}
+  >
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.46h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+const TelegramIcon = ({ size = 16 }: { size?: number }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    width={size} 
+    height={size} 
+    fill="currentColor"
+    style={{ display: "inline-block", verticalAlign: "middle" }}
+  >
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.38-.49 1.04-.74 4.07-1.77 6.79-2.93 8.16-3.5 3.89-1.61 4.7-1.89 5.23-1.9.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.16-.03.25z" />
+  </svg>
+);
+
 interface StepBadgeProps {
   num: string;
   color: string;
@@ -348,8 +372,30 @@ export default function Buy() {
                 </div>
               </div>
               <div className="mt-8 pt-6 border-t border-white/5">
-                <Link href="/readystocks" className="btn w-full justify-center text-xs tracking-wider" style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)", color: "#fff", border: "none" }}>
-                  VIEW READY-TO-PLAY ACCOUNTS →
+                <Link href="/readystocks" className="btn w-full justify-center text-[12px] tracking-[1.5px] flex items-center justify-center gap-2" style={{ 
+                  background: "linear-gradient(135deg, #1d4ed8, #3b82f6)", 
+                  color: "#fff", 
+                  border: "1px solid rgba(59, 130, 246, 0.4)", 
+                  boxShadow: "0 4px 15px rgba(37, 99, 235, 0.25)",
+                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  padding: "14px 24px",
+                  borderRadius: "24px",
+                  fontWeight: 800,
+                  textTransform: "uppercase"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(37, 99, 235, 0.5)";
+                  e.currentTarget.style.background = "linear-gradient(135deg, #3b82f6, #60a5fa)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "none";
+                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(37, 99, 235, 0.25)";
+                  e.currentTarget.style.background = "linear-gradient(135deg, #1d4ed8, #3b82f6)";
+                }}>
+                  <Gamepad2 size={15} className="shrink-0" />
+                  <span>VIEW READY-TO-PLAY ACCOUNTS</span>
+                  <span className="ml-0.5 font-sans">→</span>
                 </Link>
               </div>
             </div>
@@ -420,12 +466,74 @@ export default function Buy() {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-white/5 flex gap-3">
-                <a href="https://whatsapp.com/channel/0029VbAuBtrIXnlpr3jvnN13" target="_blank" rel="noreferrer" className="btn flex-1 justify-center text-[10px] tracking-wider" style={{ background: "rgba(34,197,94,0.15)", color: "#4ade80", border: "1px solid rgba(34,197,94,0.3)", padding: "12px 0" }}>
-                  WHATSAPP CHANNEL
+              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col gap-2.5">
+                <a 
+                  href="https://whatsapp.com/channel/0029VbAuBtrIXnlpr3jvnN13" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn w-full justify-center text-[11px] tracking-[1.5px] flex items-center justify-center gap-2" 
+                  style={{ 
+                    background: "rgba(10, 12, 16, 0.6)", 
+                    color: "#25D366", 
+                    border: "1px solid rgba(37, 211, 102, 0.25)", 
+                    padding: "13px 20px",
+                    borderRadius: "24px",
+                    fontWeight: 800,
+                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                    textTransform: "uppercase"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, #25D366, #128C7E)";
+                    e.currentTarget.style.color = "#000";
+                    e.currentTarget.style.border = "1px solid transparent";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(37, 211, 102, 0.35)";
+                    e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(10, 12, 16, 0.6)";
+                    e.currentTarget.style.color = "#25D366";
+                    e.currentTarget.style.border = "1px solid rgba(37, 211, 102, 0.25)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+                    e.currentTarget.style.transform = "none";
+                  }}
+                >
+                  <WhatsAppIcon size={14} />
+                  <span>WHATSAPP CHANNEL</span>
                 </a>
-                <a href="https://t.me/maddy_bgmistore" target="_blank" rel="noreferrer" className="btn flex-1 justify-center text-[10px] tracking-wider" style={{ background: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "1px solid rgba(56,189,248,0.3)", padding: "12px 0" }}>
-                  TELEGRAM CHANNEL
+                <a 
+                  href="https://t.me/maddy_bgmistore" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn w-full justify-center text-[11px] tracking-[1.5px] flex items-center justify-center gap-2" 
+                  style={{ 
+                    background: "rgba(10, 12, 16, 0.6)", 
+                    color: "#229ED9", 
+                    border: "1px solid rgba(34, 158, 217, 0.25)", 
+                    padding: "13px 20px",
+                    borderRadius: "24px",
+                    fontWeight: 800,
+                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                    textTransform: "uppercase"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, #229ED9, #0088cc)";
+                    e.currentTarget.style.color = "#000";
+                    e.currentTarget.style.border = "1px solid transparent";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(34, 158, 217, 0.35)";
+                    e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(10, 12, 16, 0.6)";
+                    e.currentTarget.style.color = "#229ED9";
+                    e.currentTarget.style.border = "1px solid rgba(34, 158, 217, 0.25)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+                    e.currentTarget.style.transform = "none";
+                  }}
+                >
+                  <TelegramIcon size={14} />
+                  <span>TELEGRAM CHANNEL</span>
                 </a>
               </div>
             </div>
@@ -498,9 +606,74 @@ export default function Buy() {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-white/5">
-                <a href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20have%20a%20custom%20BGMI%20account%20requirement" target="_blank" rel="noreferrer" className="btn w-full justify-center text-[11px] tracking-wider" style={{ background: "transparent", color: "#38bdf8", border: "1px solid rgba(56,189,248,0.4)" }}>
-                  <Send size={14} style={{ display: "inline", marginRight: "6px" }} /> SUBMIT CUSTOM REQUEST →
+              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col gap-2.5">
+                <a 
+                  href="https://wa.me/+919025391516?text=Hi%20Maddy!%20I%20have%20a%20custom%20BGMI%20account%20requirement" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn w-full justify-center text-[11px] tracking-[1.5px] flex items-center justify-center gap-2" 
+                  style={{ 
+                    background: "rgba(10, 12, 16, 0.6)", 
+                    color: "#25D366", 
+                    border: "1px solid rgba(37, 211, 102, 0.25)", 
+                    padding: "13px 20px",
+                    borderRadius: "24px",
+                    fontWeight: 800,
+                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                    textTransform: "uppercase"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, #25D366, #128C7E)";
+                    e.currentTarget.style.color = "#000";
+                    e.currentTarget.style.border = "1px solid transparent";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(37, 211, 102, 0.35)";
+                    e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(10, 12, 16, 0.6)";
+                    e.currentTarget.style.color = "#25D366";
+                    e.currentTarget.style.border = "1px solid rgba(37, 211, 102, 0.25)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+                    e.currentTarget.style.transform = "none";
+                  }}
+                >
+                  <WhatsAppIcon size={14} />
+                  <span>REQUEST ON WHATSAPP</span>
+                </a>
+                <a 
+                  href="https://t.me/MBSxMADDY17?text=Hi%20Maddy!%20I%20have%20a%20custom%20BGMI%20account%20requirement" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn w-full justify-center text-[11px] tracking-[1.5px] flex items-center justify-center gap-2" 
+                  style={{ 
+                    background: "rgba(10, 12, 16, 0.6)", 
+                    color: "#229ED9", 
+                    border: "1px solid rgba(34, 158, 217, 0.25)", 
+                    padding: "13px 20px",
+                    borderRadius: "24px",
+                    fontWeight: 800,
+                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                    textTransform: "uppercase"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, #229ED9, #0088cc)";
+                    e.currentTarget.style.color = "#000";
+                    e.currentTarget.style.border = "1px solid transparent";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(34, 158, 217, 0.35)";
+                    e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(10, 12, 16, 0.6)";
+                    e.currentTarget.style.color = "#229ED9";
+                    e.currentTarget.style.border = "1px solid rgba(34, 158, 217, 0.25)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+                    e.currentTarget.style.transform = "none";
+                  }}
+                >
+                  <TelegramIcon size={14} />
+                  <span>REQUEST ON TELEGRAM</span>
                 </a>
               </div>
             </div>

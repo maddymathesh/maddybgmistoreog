@@ -50,6 +50,18 @@ export async function getProducts() {
   }
 }
 
+export async function getProductById(id: string) {
+  try {
+    const product = await db.query.products.findFirst({
+      where: eq(products.id, id),
+    });
+    return { success: true, product };
+  } catch (error) {
+    console.error(`Failed to fetch product with id ${id}:`, error);
+    return { success: false, error: "Failed to fetch product" };
+  }
+}
+
 export async function getUcPacks() {
   try {
     const packs = await db

@@ -10,7 +10,10 @@ import {
   Settings, Plus, Edit, Trash2, Check, X, ShieldAlert,
   Loader2, RefreshCw, MessageCircle, Copy,
   TrendingUp, Users, Zap, Camera, Key, User,
-  Menu, Coins, Gift, Car, FileCheck, History
+  Menu, Coins, Gift, Car, FileCheck, History, Mail, Crown, Gem,
+  Clock, Lock, AlertCircle, XCircle, CheckCircle, Slash, Tag,
+  Sparkles, Flame, PlusCircle, Award, Timer, BadgeCheck, Trophy, Target,
+  ShieldCheck, Archive
 } from "lucide-react";
 
 import {
@@ -54,6 +57,92 @@ const SIDEBAR_ITEMS = [
   { id: "customer_feedback", label: "Customer Feedback", icon: MessageSquare },
   { id: "activity_log", label: "Activity Log", icon: History },
   { id: "admin_controls", label: "Admin Controls", icon: Settings },
+];
+
+const WhatsAppLogo = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+const FacebookLogo = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+    <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z" />
+  </svg>
+);
+
+const XLogo = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+const AppleLogo = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+    <path d="M17.05 13.605c-.015-2.42 1.974-3.574 2.064-3.626-1.125-1.645-2.875-1.87-3.51-1.902-1.503-.153-2.93.882-3.693.882-.764 0-1.94-.85-3.18-.828-1.614.022-3.107.937-3.935 2.378-1.678 2.91-.428 7.217 1.205 9.584.795 1.157 1.733 2.455 2.983 2.408 1.198-.047 1.666-.77 3.11-.77 1.444 0 1.884.77 3.134.747 1.272-.02 2.08-1.18 2.868-2.34 1.002-1.465 1.415-2.88 1.434-2.955-.03-.013-2.673-1.025-2.68-3.582M15.42 5.48c.646-.78 1.08-1.865.96-2.95-.928.037-2.05.62-2.71 1.402-.53.618-1.045 1.72-.907 2.785.105.008.22.015.334.015.864 0 1.66-.465 2.323-1.252"/>
+  </svg>
+);
+
+const GameCenterLogo = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+    <circle cx="8" cy="9" r="4.5" fill="#FF3B30" opacity="0.85" />
+    <circle cx="16" cy="9" r="4.5" fill="#007AFF" opacity="0.85" />
+    <circle cx="8" cy="15" r="4.5" fill="#4CD964" opacity="0.85" />
+    <circle cx="16" cy="15" r="4.5" fill="#FFCC00" opacity="0.85" />
+    <circle cx="12" cy="12" r="4" fill="#5856D6" opacity="0.85" />
+  </svg>
+);
+
+const PRIMARY_LOGIN_OPTIONS = [
+  { value: "X", label: "X / Twitter", icon: XLogo, color: "#fff", bg: "rgba(255,255,255,0.05)" },
+  { value: "Facebook", label: "Facebook", icon: FacebookLogo, color: "#4A9FFF", bg: "rgba(24,119,242,0.1)" },
+  { value: "Google Playgames", label: "Google Playgames", icon: (props: any) => <Gamepad2 {...props} size={16} />, color: "#34A853", bg: "rgba(52,168,83,0.1)" },
+  { value: "Whats app", label: "Whats app", icon: WhatsAppLogo, color: "#25D366", bg: "rgba(37,211,102,0.1)" },
+  { value: "Apple ID", label: "Apple ID", icon: AppleLogo, color: "#fff", bg: "rgba(255,255,255,0.05)" },
+  { value: "Game Center", label: "Game Center", icon: GameCenterLogo, color: "#00A3FF", bg: "rgba(0,163,255,0.1)" }
+];
+
+const SECONDARY_LOGIN_OPTIONS = [
+  { value: "None", label: "No Login", icon: (props: any) => <X {...props} size={16} />, color: "#8b949e", bg: "rgba(255,255,255,0.05)" },
+  ...PRIMARY_LOGIN_OPTIONS
+];
+
+const CATEGORY_OPTIONS = [
+  { value: "Budget", label: "Budget", icon: Coins },
+  { value: "Mid Range", label: "Mid Range", icon: TrendingUp },
+  { value: "Premium", label: "Premium", icon: Crown },
+  { value: "Ultra Premium", label: "Ultra Premium", icon: Gem }
+];
+
+const STATUS_OPTIONS = [
+  { value: "available", label: "Available", icon: CheckCircle, color: "#4ade80", bg: "rgba(74,222,128,0.1)" },
+  { value: "coming_soon", label: "Coming Soon", icon: Clock, color: "#60a5fa", bg: "rgba(96,165,250,0.1)" },
+  { value: "reserved", label: "Reserved", icon: Lock, color: "#c084fc", bg: "rgba(192,132,252,0.1)" },
+  { value: "on_hold", label: "On Hold", icon: AlertCircle, color: "#fb923c", bg: "rgba(251,146,60,0.1)" },
+  { value: "sold", label: "Sold", icon: XCircle, color: "#f87171", bg: "rgba(248,113,113,0.1)" },
+  { value: "ready_to_exchange", label: "Ready to Exchange", icon: RefreshCw, color: "#22d3ee", bg: "rgba(34,211,238,0.1)" }
+];
+
+const PROMO_TAG_OPTIONS = [
+  { value: "None", label: "No Tag", icon: Slash, color: "#8b949e", bg: "rgba(255,255,255,0.05)" },
+  { value: "Deal of the Day", label: "Deal of the Day", icon: Tag, color: "#ff4757", bg: "rgba(255,71,87,0.1)" },
+  { value: "Ultra Premium", label: "Ultra Premium", icon: Sparkles, color: "#ffb8b8", bg: "rgba(255,184,184,0.1)" },
+  { value: "Hot", label: "Hot", icon: Flame, color: "#ff6b81", bg: "rgba(255,107,129,0.1)" },
+  { value: "Trending", label: "Trending", icon: TrendingUp, color: "#ffa502", bg: "rgba(255,165,2,0.1)" },
+  { value: "New Arrival", label: "New Arrival", icon: PlusCircle, color: "#2ed573", bg: "rgba(46,213,115,0.1)" },
+  { value: "Rare Collection", label: "Rare Collection", icon: Award, color: "#eccc68", bg: "rgba(236,204,104,0.1)" },
+  { value: "Limited Stock", label: "Limited Stock", icon: Timer, color: "#ff7f50", bg: "rgba(255,127,80,0.1)" },
+  { value: "Best Seller", label: "Best Seller", icon: BadgeCheck, color: "#70a1ff", bg: "rgba(112,161,255,0.1)" },
+  { value: "Pro Collector", label: "Pro Collector", icon: Gamepad2, color: "#1e90ff", bg: "rgba(30,144,255,0.1)" },
+  { value: "Triple Conqueror", label: "Triple Conqueror", icon: Trophy, color: "#ffa502", bg: "rgba(255,165,2,0.1)" },
+  { value: "Bgmi Partner", label: "Bgmi Partner", icon: Users, color: "#2ed573", bg: "rgba(46,213,115,0.1)" },
+  { value: "Top 100", label: "Top 100", icon: Target, color: "#ff4757", bg: "rgba(255,71,87,0.1)" },
+  { value: "High Value", label: "High Value", icon: Coins, color: "#ffd700", bg: "rgba(255,215,0,0.1)" },
+  { value: "Exclusive", label: "Exclusive", icon: ShieldCheck, color: "#c084fc", bg: "rgba(192,132,252,0.1)" },
+  { value: "Premium Inventory", label: "Premium Inventory", icon: Archive, color: "#22d3ee", bg: "rgba(34,211,238,0.1)" },
+  { value: "Supercar Collector", label: "Supercar Collector", icon: Car, color: "#ff6b81", bg: "rgba(255,107,129,0.1)" },
+  { value: "Xsuit Collector", label: "Xsuit Collector", icon: Gift, color: "#ffa502", bg: "rgba(255,165,2,0.1)" },
+  { value: "GunLabs Lover", label: "GunLabs Lover", icon: Zap, color: "#ffd700", bg: "rgba(255,215,0,0.1)" }
 ];
 
 export default function AdminDashboard() {
@@ -103,6 +192,7 @@ export default function AdminDashboard() {
 
   // Load all dashboard data
   const loadDashboardData = async () => {
+    if (!user || !isAdmin) return;
     setLoading(true);
     try {
       const [
@@ -153,8 +243,10 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    loadDashboardData();
-  }, [refreshKey]);
+    if (isLoaded && user && isAdmin) {
+      loadDashboardData();
+    }
+  }, [refreshKey, isLoaded, user, isAdmin]);
 
   const triggerRefresh = () => {
     setRefreshKey(prev => prev + 1);
@@ -170,11 +262,28 @@ export default function AdminDashboard() {
     status: "available",
     youtubeUrl: "",
     primaryLogin: "Facebook",
-    secondaryLogin: "Play Games",
+    secondaryLogin: "None (Single Login)",
     unlinkGuarantee: "Not Applicable",
     tag: "None",
     imageUrls: [] as string[]
   });
+
+  const resetProductForm = () => {
+    setProductForm({
+      title: "",
+      description: "",
+      price: "",
+      category: "Budget",
+      status: "available",
+      youtubeUrl: "",
+      primaryLogin: "Facebook",
+      secondaryLogin: "None (Single Login)",
+      unlinkGuarantee: "Not Applicable",
+      tag: "None",
+      imageUrls: []
+    });
+    setEditingProduct(null);
+  };
 
   // --- CATALOG FORMS ---
   const [ucPackForm, setUcPackForm] = useState({ ucAmount: "", marketPrice: "", offerPrice: "", bonusUc: "", method: "view_login", tag: "None" });
@@ -194,7 +303,7 @@ export default function AdminDashboard() {
         const res = await updateProduct(editingProduct.id, productForm);
         if (res.success) {
           toast.success("Product updated successfully!");
-          setEditingProduct(null);
+          resetProductForm();
           triggerRefresh();
         } else {
           toast.error("Failed to update product");
@@ -203,9 +312,10 @@ export default function AdminDashboard() {
         const res = await createProduct(productForm);
         if (res.success) {
           toast.success("Product created successfully!");
+          resetProductForm();
           triggerRefresh();
         } else {
-          toast.error("Failed to create product");
+          toast.error(res.error || "Failed to create product");
         }
       }
     } catch (_err) {
@@ -725,7 +835,8 @@ export default function AdminDashboard() {
                   {/* ADD PRODUCT FORM */}
                   <div className="lg:col-span-1 glass-panel rounded-2xl p-6 shadow-xl h-fit">
                     <div className="flex items-center gap-2 mb-6 text-gold font-bold tracking-wider font-h">
-                      <Plus size={16} /> Add Product
+                      {editingProduct ? <Edit size={16} /> : <Plus size={16} />}
+                      {editingProduct ? "Edit Product" : "Add Product"}
                     </div>
                     <form onSubmit={handleProductSubmit} className="flex flex-col gap-4">
                       <div>
@@ -737,48 +848,240 @@ export default function AdminDashboard() {
                       <div>
                         <textarea value={productForm.description} onChange={e => setProductForm({ ...productForm, description: e.target.value })} placeholder="Account Description (items, skins, levels...)" rows={4} className="input-field resize-none" />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <input type="number" required value={productForm.price} onChange={e => setProductForm({ ...productForm, price: e.target.value })} placeholder="Price (₹)" className="input-field" />
-                        <select value={productForm.category} onChange={e => setProductForm({ ...productForm, category: e.target.value })} className="input-field">
-                          <option value="Budget">Budget</option>
-                          <option value="Mid Range">Mid Range</option>
-                          <option value="Premium">Premium</option>
-                          <option value="Ultra Premium">Ultra Premium</option>
-                        </select>
+                      <div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">Listing Price (₹)</label>
+                        <div className="relative flex items-center">
+                          <span className="absolute left-4 text-gold font-bold text-sm pointer-events-none select-none">₹</span>
+                          <input 
+                            type="number" 
+                            required 
+                            value={productForm.price} 
+                            onChange={e => setProductForm({ ...productForm, price: e.target.value })} 
+                            placeholder="0" 
+                            className="input-field font-mono text-white text-sm" 
+                            style={{ paddingLeft: "2.25rem" }}
+                          />
+                        </div>
+                        
+                        {/* Quick Presets / Increments */}
+                        <div className="flex gap-2 flex-wrap mt-2">
+                          {[1000, 5000, 10000, 50000].map((preset) => (
+                            <button
+                              key={preset}
+                              type="button"
+                              onClick={() => {
+                                const currentPrice = Number(productForm.price) || 0;
+                                setProductForm({ ...productForm, price: (currentPrice + preset).toString() });
+                              }}
+                              className="text-[9px] font-extrabold font-h uppercase tracking-wider px-2.5 py-1.5 rounded bg-white/5 border border-white/10 hover:border-gold hover:bg-gold/10 text-muted hover:text-white transition"
+                            >
+                              +{preset.toLocaleString("en-IN")}
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() => setProductForm({ ...productForm, price: "" })}
+                            className="text-[9px] font-extrabold font-h uppercase tracking-wider px-2.5 py-1.5 rounded bg-red-500/10 border border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition ml-auto"
+                          >
+                            Reset
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">CATEGORY / TIER</label>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                          {CATEGORY_OPTIONS.map((opt) => {
+                            const isSelected = productForm.category === opt.value;
+                            const IconComponent = opt.icon;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => setProductForm({ ...productForm, category: opt.value })}
+                                style={{
+                                  borderColor: isSelected ? "var(--color-gold)" : "rgba(255,255,255,0.08)",
+                                }}
+                                className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all gap-1.5 ${
+                                  isSelected
+                                    ? "bg-gold/15 text-white shadow-[0_0_12px_rgba(255,215,0,0.15)]"
+                                    : "bg-white/2 hover:bg-white/5 text-muted hover:text-white"
+                                }`}
+                              >
+                                <IconComponent 
+                                  size={18} 
+                                  style={{ color: isSelected ? "var(--color-gold)" : "currentColor" }} 
+                                />
+                                <span className="text-[10px] font-extrabold font-h uppercase tracking-wider">{opt.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PRIMARY LOGIN</label>
-                        <select value={productForm.primaryLogin || "Facebook"} onChange={e => setProductForm({ ...productForm, primaryLogin: e.target.value })} className="input-field">
-                          <option value="X">X</option>
-                          <option value="Facebook">Facebook</option>
-                          <option value="Google">Google</option>
-                        </select>
+                        <div className="grid grid-cols-2 gap-2 mt-1">
+                          {PRIMARY_LOGIN_OPTIONS.map((opt) => {
+                            const isSelected = productForm.primaryLogin === opt.value;
+                            const IconComponent = opt.icon;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => setProductForm({ ...productForm, primaryLogin: opt.value })}
+                                style={{
+                                  borderColor: isSelected ? "var(--color-gold)" : "rgba(255,255,255,0.08)",
+                                }}
+                                className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all ${
+                                  isSelected
+                                    ? "bg-gold/15 text-white shadow-[0_0_12px_rgba(255,215,0,0.15)]"
+                                    : "bg-white/2 hover:bg-white/5 text-muted hover:text-white"
+                                }`}
+                              >
+                                <div 
+                                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" 
+                                  style={{ background: opt.bg, color: opt.color }}
+                                >
+                                  <IconComponent />
+                                </div>
+                                <span className="flex-1 text-[11px] font-bold font-h truncate">{opt.label}</span>
+                                <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                                  isSelected ? "border-gold" : "border-white/30"
+                                }`}>
+                                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">SECONDARY LOGIN</label>
-                        <select value={productForm.secondaryLogin || "None (Single Login)"} onChange={e => setProductForm({ ...productForm, secondaryLogin: e.target.value })} className="input-field">
-                          <option value="None (Single Login)">None (Single Login)</option>
-                          <option value="Play Games">Play Games</option>
-                          <option value="Email">Email</option>
-                          <option value="Facebook">Facebook</option>
-                        </select>
+                        <div className="grid grid-cols-2 gap-2 mt-1">
+                          {SECONDARY_LOGIN_OPTIONS.map((opt) => {
+                            const isSelected = productForm.secondaryLogin === opt.value || 
+                              (opt.value === "None" && (!productForm.secondaryLogin || productForm.secondaryLogin === "None" || productForm.secondaryLogin === "None (Single Login)"));
+                            const IconComponent = opt.icon;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => setProductForm({ ...productForm, secondaryLogin: opt.value === "None" ? "None (Single Login)" : opt.value })}
+                                style={{
+                                  borderColor: isSelected ? "var(--color-gold)" : "rgba(255,255,255,0.08)",
+                                }}
+                                className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all ${
+                                  isSelected
+                                    ? "bg-gold/15 text-white shadow-[0_0_12px_rgba(255,215,0,0.15)]"
+                                    : "bg-white/2 hover:bg-white/5 text-muted hover:text-white"
+                                }`}
+                              >
+                                <div 
+                                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" 
+                                  style={{ background: opt.bg, color: opt.color }}
+                                >
+                                  <IconComponent />
+                                </div>
+                                <span className="flex-1 text-[11px] font-bold font-h truncate">{opt.label}</span>
+                                <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                                  isSelected ? "border-gold" : "border-white/30"
+                                }`}>
+                                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                       <div>
                         <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">PROMO TAG</label>
-                        <select value={productForm.tag} onChange={e => setProductForm({ ...productForm, tag: e.target.value })} className="input-field">
-                          <option value="None">None</option>
-                          <option value="Hot">Hot</option>
-                          <option value="Sale">Sale</option>
-                          <option value="Best Value">Best Value</option>
-                        </select>
+                        <div className="grid grid-cols-2 gap-2 mt-1 max-h-48 overflow-y-auto pr-1 border border-white/5 rounded-xl p-2 bg-black/10">
+                          {PROMO_TAG_OPTIONS.map((opt) => {
+                            const isSelected = productForm.tag === opt.value || 
+                              (opt.value === "None" && (!productForm.tag || productForm.tag === "None"));
+                            const IconComponent = opt.icon;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => setProductForm({ ...productForm, tag: opt.value })}
+                                style={{
+                                  borderColor: isSelected ? "var(--color-gold)" : "rgba(255,255,255,0.08)",
+                                }}
+                                className={`flex items-center gap-2 p-2 rounded-lg border text-left transition-all ${
+                                  isSelected
+                                    ? "bg-gold/15 text-white shadow-[0_0_10px_rgba(255,215,0,0.1)]"
+                                    : "bg-white/2 hover:bg-white/5 text-muted hover:text-white"
+                                }`}
+                              >
+                                <div 
+                                  className="w-6 h-6 rounded flex items-center justify-center shrink-0" 
+                                  style={{ background: opt.bg, color: opt.color }}
+                                >
+                                  <IconComponent size={12} />
+                                </div>
+                                <span className="flex-1 text-[10px] font-bold font-h truncate">{opt.label}</span>
+                                <div className={`w-3 h-3 rounded-full border flex items-center justify-center shrink-0 ${
+                                  isSelected ? "border-gold" : "border-white/30"
+                                }`}>
+                                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                       <div className="mb-2">
-                        <select value={productForm.status} onChange={e => setProductForm({ ...productForm, status: e.target.value })} className="input-field">
-                          <option value="available">Available</option>
-                          <option value="sold">Sold</option>
-                        </select>
+                        <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-2">AVAILABILITY STATUS</label>
+                        <div className="grid grid-cols-2 gap-2 mt-1">
+                          {STATUS_OPTIONS.map((opt) => {
+                            const isSelected = productForm.status === opt.value;
+                            const IconComponent = opt.icon;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => setProductForm({ ...productForm, status: opt.value })}
+                                className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all ${
+                                  isSelected
+                                    ? "text-white shadow-[0_0_12px_rgba(255,255,255,0.05)]"
+                                    : "bg-white/2 hover:bg-white/5 text-muted hover:text-white"
+                                }`}
+                                style={{
+                                  backgroundColor: isSelected ? opt.bg : undefined,
+                                  borderColor: isSelected ? opt.color : "rgba(255,255,255,0.08)"
+                                }}
+                              >
+                                <div 
+                                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" 
+                                  style={{ background: opt.bg, color: opt.color }}
+                                >
+                                  <IconComponent size={14} />
+                                </div>
+                                <span className="flex-1 text-[11px] font-bold font-h truncate">{opt.label}</span>
+                                <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0`}
+                                  style={{ borderColor: isSelected ? opt.color : "rgba(255,255,255,0.3)" }}
+                                >
+                                  {isSelected && <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: opt.color }} />}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <button type="submit" className="btn btn-gold w-full justify-center py-3">SAVE PRODUCT</button>
+                      <div className="flex gap-2">
+                        {editingProduct && (
+                          <button 
+                            type="button" 
+                            onClick={resetProductForm} 
+                            className="btn border border-white/10 hover:bg-white/5 text-white flex-1 justify-center py-3"
+                          >
+                            CANCEL
+                          </button>
+                        )}
+                        <button type="submit" className="btn btn-gold flex-[2] justify-center py-3">
+                          {editingProduct ? "SAVE CHANGES" : "SAVE PRODUCT"}
+                        </button>
+                      </div>
                     </form>
                   </div>
 

@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans dark", geist.variable)}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#080a0f] text-[#eaeaea]`}>
         <ClerkProvider
           appearance={{

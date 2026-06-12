@@ -219,6 +219,17 @@ html, body {
   box-shadow: 0 0 8px rgba(255, 215, 0, 0.15);
 }
 
+/* Hide number input spinners for cleaner visual design */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* V1 Transaction Panel Styles */
 
 /* Custom Brand Cursor on desktop */

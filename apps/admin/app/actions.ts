@@ -152,9 +152,9 @@ export async function createProduct(data: {
 
     await logAdminAction("Catalog", `Created new product: ${data.title}`);
     return { success: true, product: newProduct };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to create product:", error);
-    return { success: false, error: "Failed to create product" };
+    return { success: false, error: error.message || "Failed to create product" };
   }
 }
 
