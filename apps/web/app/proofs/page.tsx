@@ -75,11 +75,12 @@ export default function ProofsPage() {
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(255,215,0,0.06) 0%, transparent 65%)" }} />
           <div style={{ position: "relative", zIndex: 2, padding: "0 5%", maxWidth: "800px" }}>
             <div className="badge mb-4"><Camera size={14} /> Trust &amp; Transparency</div>
-            <h1 style={{ fontSize: "clamp(34px, 6vw, 60px)", fontWeight: 900, marginBottom: "16px", textShadow: "0 2px 25px rgba(0,0,0,0.7)" }} className="uppercase text-white">
-              Proof &amp; <span className="g">Feedback</span>
+            <h1 style={{ fontFamily: "var(--font-h)", fontSize: "clamp(34px, 6vw, 68px)", fontWeight: 900, lineHeight: 1.1, marginBottom: "18px" }} className="uppercase text-white">
+              <span style={{ textShadow: "0 2px 25px rgba(0,0,0,0.7)" }}>Successful Deal</span> <br />
+              <span className="g" style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.5))" }}>Proofs</span>
             </h1>
             <p style={{ color: "rgba(234,234,234,0.85)", maxWidth: "620px", margin: "0 auto", lineHeight: 1.7, fontSize: "16px", textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
-              Browse real payment proofs and customer feedback from our successful deals — organized by month for complete transparency.
+              Browse real payment proofs and successful transaction logs from our deals — organized by month for complete transparency.
             </p>
           </div>
         </section>
@@ -193,7 +194,7 @@ export default function ProofsPage() {
                           )}
                         </div>
                         <div style={{ padding: "16px", background: "#131722" }}>
-                          <h3 style={{ fontSize: "14px", fontWeight: 700, color: "#fff", margin: 0 }}>{p.title || "Verified Transaction"}</h3>
+                          <h3 style={{ fontFamily: "var(--font-h)", fontSize: "14px", fontWeight: 700, color: "#fff", margin: 0 }}>{p.title || "Verified Transaction"}</h3>
                           <p style={{ fontSize: "11px", color: "var(--color-gold)", textTransform: "uppercase", marginTop: "4px", letterSpacing: "0.5px", margin: "4px 0 0" }}>{p.month} {p.year}</p>
                         </div>
                       </div>

@@ -76,10 +76,9 @@ export default function XsuitGiftPage() {
             <h1 style={{
               fontFamily: "var(--font-h)", fontSize: "clamp(34px,6vw,68px)",
               fontWeight: 900, lineHeight: 1.1, marginBottom: "18px",
-              textShadow: "0 2px 25px rgba(0,0,0,0.7)",
             }} className="uppercase text-white">
-              Legendary X-Suit <br />
-              <span className="g">Gifting Service</span>
+              <span style={{ textShadow: "0 2px 25px rgba(0,0,0,0.7)" }}>Legendary X-Suit</span> <br />
+              <span className="g" style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.5))" }}>Gifting Service</span>
             </h1>
             <p style={{
               color: "rgba(234,234,234,0.85)", fontSize: "clamp(14px,1.8vw,17px)",

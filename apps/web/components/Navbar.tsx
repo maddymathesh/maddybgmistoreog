@@ -29,7 +29,7 @@ const navLinks = [
     label: "Reviews",
     subLinks: [
       { to: "/reviews", label: "Buyer Reviews" },
-      { to: "/proofs", label: "Proof & Feedback" },
+      { to: "/proofs", label: "Proofs" },
       { to: "/feedback", label: "Customer Feedback" },
     ],
   },
@@ -55,6 +55,13 @@ export default function Navbar() {
   const pathname = usePathname();
   const { user } = useUser();
   const navRef = useRef<HTMLElement>(null);
+
+  const toggleMobileExpand = (label: string) => {
+    setMobileExpanded((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
+  };
 
   // Close menu on route change
   useEffect(() => {
@@ -89,9 +96,14 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const userRole = user?.publicMetadata?.role as string || "USER";
-  const isPermanentAdmin = user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com";
-  const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER", "CONTENT_MANAGER"].includes(userRole);
+  const userRole = (user?.publicMetadata?.role as string) || "USER";
+  const isPermanentAdmin = 
+    user?.primaryEmailAddress?.emailAddress === "contact@maddybgmistore.in" ||
+    user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com" ||
+    user?.primaryEmailAddress?.emailAddress === "r.mateshwaran.io@gmail.com";
+  const showAdminPanel = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "CONTENT_MANAGER"].includes(userRole);
+  const showTransactionsPanel = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER"].includes(userRole);
+  const isAdmin = showAdminPanel || showTransactionsPanel;
   const displayRole = isPermanentAdmin ? "SUPER ADMIN" : userRole.replace("_", " ");
 
   const doubled = [...tickerItems, ...tickerItems];
@@ -106,11 +118,11 @@ export default function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-[1000] transition-all duration-300"
       style={{
-        background: scrolled ? "rgba(8, 10, 15, 0.85)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255, 255, 255, 0.04)" : "1px solid transparent",
-        boxShadow: scrolled ? "0 10px 30px rgba(0, 0, 0, 0.2)" : "none",
+        background: scrolled || mobileOpen ? "rgba(8, 10, 15, 0.95)" : "transparent",
+        backdropFilter: scrolled || mobileOpen ? "blur(20px)" : "none",
+        WebkitBackdropFilter: scrolled || mobileOpen ? "blur(20px)" : "none",
+        borderBottom: scrolled || mobileOpen ? "1px solid rgba(255, 255, 255, 0.08)" : "1px solid transparent",
+        boxShadow: scrolled || mobileOpen ? "0 10px 30px rgba(0, 0, 0, 0.2)" : "none",
       }}
     >
       {/* ── Main Nav Bar ── */}
@@ -171,22 +183,26 @@ export default function Navbar() {
                 Manage <ChevronDown size={14} className="ml-1 opacity-60 transition-transform group-hover/adminNav:rotate-180" />
               </div>
               <div className="absolute top-[calc(100%+4px)] right-0 hidden group-hover/adminNav:block bg-[#111520]/80 backdrop-blur-2xl border border-white/10 rounded-[18px] p-2 min-w-[180px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)] animate-fade-in before:content-[''] before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 z-50">
-                <a
-                  href={process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.maddybgmistore.in"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block px-4 py-2.5 text-[14px] font-sans font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-[10px] transition-all"
-                >
-                  Admin Panel
-                </a>
-                <a
-                  href={process.env.NODE_ENV === "development" ? "http://localhost:3001/transactions" : "https://admin.maddybgmistore.in/transactions"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block px-4 py-2.5 text-[14px] font-sans font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-[10px] transition-all mt-1"
-                >
-                  Transactions Panel
-                </a>
+                {showAdminPanel && (
+                  <a
+                    href={process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.maddybgmistore.in"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block px-4 py-2.5 text-[14px] font-sans font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-[10px] transition-all"
+                  >
+                    Admin Panel
+                  </a>
+                )}
+                {showTransactionsPanel && (
+                  <a
+                    href={process.env.NODE_ENV === "development" ? "http://localhost:3001/transactions" : "https://admin.maddybgmistore.in/transactions"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`block px-4 py-2.5 text-[14px] font-sans font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-[10px] transition-all ${showAdminPanel ? "mt-1" : ""}`}
+                  >
+                    Transactions Panel
+                  </a>
+                )}
               </div>
             </li>
           )}
@@ -222,11 +238,136 @@ export default function Navbar() {
           </SignedOut>
         </ul>
 
+        {/* Mobile Toggle Button */}
+        <button
+          className="lg:hidden text-gray-300 hover:text-white p-2 focus:outline-none transition-colors duration-200"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
 
+      {/* Mobile Menu Panel */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed top-[64px] left-0 right-0 bottom-0 bg-[#080a0f]/98 backdrop-blur-3xl border-t border-white/10 z-[999] overflow-y-auto px-6 py-6 transition-all duration-300 flex flex-col justify-between">
+          <div className="flex flex-col gap-2">
+            {navLinks.map((l) => (
+              <div key={l.label || l.to} className="border-b border-white/5 pb-2">
+                {l.subLinks ? (
+                  <>
+                    <button
+                      onClick={() => toggleMobileExpand(l.label)}
+                      className="w-full flex items-center justify-between text-gray-300 hover:text-white font-sans text-[16px] font-semibold py-3 px-2"
+                    >
+                      <span>{l.label}</span>
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${mobileExpanded[l.label] ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {mobileExpanded[l.label] && (
+                      <div className="pl-4 flex flex-col gap-1.5 mt-1 animate-fade-in">
+                        {l.subLinks.map((s) => (
+                          <Link
+                            key={s.to}
+                            href={s.to}
+                            className={`text-gray-400 hover:text-white text-[14px] font-sans font-medium py-2 px-3 rounded-lg hover:bg-white/5 ${
+                              pathname === s.to ? "text-white bg-white/10" : ""
+                            }`}
+                          >
+                            {s.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    href={l.to}
+                    className={`text-gray-300 hover:text-white font-sans text-[16px] font-semibold py-3 px-2 block rounded-lg hover:bg-white/5 ${
+                      pathname === l.to ? "text-white bg-white/10" : ""
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                )}
+              </div>
+            ))}
 
+            {isAdmin && (
+              <div className="border-b border-white/5 pb-2">
+                <button
+                  onClick={() => toggleMobileExpand("Manage")}
+                  className="w-full flex items-center justify-between text-white font-sans text-[16px] font-semibold py-3 px-2"
+                >
+                  <span>Manage</span>
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform duration-200 ${mobileExpanded["Manage"] ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {mobileExpanded["Manage"] && (
+                  <div className="pl-4 flex flex-col gap-1.5 mt-1">
+                    {showAdminPanel && (
+                      <a
+                        href={process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.maddybgmistore.in"}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-400 hover:text-white text-[14px] font-sans font-medium py-2 px-3 rounded-lg hover:bg-white/5 block"
+                      >
+                        Admin Panel
+                      </a>
+                    )}
+                    {showTransactionsPanel && (
+                      <a
+                        href={process.env.NODE_ENV === "development" ? "http://localhost:3001/transactions" : "https://admin.maddybgmistore.in/transactions"}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-400 hover:text-white text-[14px] font-sans font-medium py-2 px-3 rounded-lg hover:bg-white/5 block"
+                      >
+                        Transactions Panel
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
+          {/* Mobile Auth Buttons / User Button */}
+          <div className="mt-8 pt-6 border-t border-white/10 pb-8 flex flex-col gap-4">
+            <SignedIn>
+              <div className="flex items-center gap-3 px-2">
+                <UserButton afterSignOutUrl="/" />
+                <div className="flex flex-col leading-none text-left">
+                  <span className="text-[14px] font-bold text-white font-h">
+                    {user?.firstName || user?.username || "User"}
+                  </span>
+                  <span className="text-[10px] text-gold uppercase font-bold tracking-[0.5px] mt-0.5">
+                    {displayRole}
+                  </span>
+                </div>
+              </div>
+            </SignedIn>
 
+            <SignedOut>
+              <div className="flex flex-col gap-3">
+                <SignInButton mode="modal">
+                  <button className="btn btn-outline w-full justify-center py-3 text-[13px] tracking-[1px]">
+                    Login
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="btn btn-gold w-full justify-center py-3 text-[13px] tracking-[1px]">
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </div>
+            </SignedOut>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

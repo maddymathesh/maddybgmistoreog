@@ -336,7 +336,7 @@ html, body {
 }
 .why-us-card p {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--color-muted);
   line-height: 1.6;
   margin: 0;
 }

@@ -96,7 +96,7 @@ const contacts = [
     ),
   },
   {
-    href: "mailto:maddybgmistoreog@gmail.com",
+    href: "mailto:contact@maddybgmistore.in",
     label: "Contact Us Via Email",
     color: "#EA4335",
     icon: (

@@ -372,10 +372,9 @@ export default function UCPurchase() {
             <h1 style={{
               fontFamily: "var(--font-h)", fontSize: "clamp(34px,5.5vw,68px)",
               fontWeight: 900, lineHeight: 1.1, marginBottom: "16px",
-              textShadow: "0 2px 25px rgba(0,0,0,0.7)",
             }} className="uppercase text-white">
-              Premium UC Sourcing <br />
-              <span className="g">Cheaper &amp; Faster</span>
+              <span style={{ textShadow: "0 2px 25px rgba(0,0,0,0.7)" }}>Premium UC Sourcing</span> <br />
+              <span className="g" style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.5))" }}>Cheaper &amp; Faster</span>
             </h1>
             <p style={{
               color: "rgba(234,234,234,0.85)", fontSize: "clamp(14px,1.8vw,17px)",

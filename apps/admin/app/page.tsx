@@ -327,9 +327,12 @@ export default function AdminDashboard() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Compute admin status (client-side guard; middleware is the real enforcer)
-  const isPermanentAdmin = user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com" || user?.primaryEmailAddress?.emailAddress === "r.mateshwaran.io@gmail.com";
+  const isPermanentAdmin = 
+    user?.primaryEmailAddress?.emailAddress === "contact@maddybgmistore.in" || 
+    user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com" || 
+    user?.primaryEmailAddress?.emailAddress === "r.mateshwaran.io@gmail.com";
   const userRole = (user?.publicMetadata?.role as string) || "USER";
-  const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER", "CONTENT_MANAGER"].includes(userRole);
+  const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "CONTENT_MANAGER"].includes(userRole);
 
   // Safe wrapper: catches individual server action throws so one failure doesn't kill the batch
   const safeCall = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
@@ -1547,11 +1550,21 @@ export default function AdminDashboard() {
 
   // Logged in but not an admin
   if (!isAdmin) {
+    const isTxManager = userRole === "TRANSACTION_MANAGER";
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-bg text-white font-sans">
         <ShieldAlert size={48} className="text-red-500" />
         <h1 className="font-h text-2xl font-black text-red-400">Access Denied</h1>
-        <p className="text-sm text-muted font-mono">You do not have administrative privileges to view this page.</p>
+        <p className="text-sm text-muted font-mono">
+          {isTxManager 
+            ? "Your account role (Transactions Manager) is restricted to the Transactions Panel only." 
+            : "You do not have administrative privileges to view this page."}
+        </p>
+        {isTxManager && (
+          <Link href="/transactions" className="btn btn-gold px-6 py-2.5 text-sm">
+            Go to Transactions Panel →
+          </Link>
+        )}
         <Link href="/" className="btn btn-outline px-6 py-2.5 text-sm">← Return Home</Link>
       </div>
     );
@@ -4330,7 +4343,7 @@ export default function AdminDashboard() {
                               </td>
                               <td className="py-4 px-4 text-[10px] text-muted font-mono">{admin.addedDate}</td>
                               <td className="py-4 px-4 text-right">
-                                {admin.email === "maddybgmistoreog@gmail.com" ? (
+                                {["contact@maddybgmistore.in", "maddybgmistoreog@gmail.com", "r.mateshwaran.io@gmail.com"].includes(admin.email) ? (
                                   <span className="text-[9px] font-bold text-red-900 px-4 py-1.5 uppercase tracking-wider cursor-not-allowed">
                                     REVOKE
                                   </span>

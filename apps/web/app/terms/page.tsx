@@ -176,10 +176,11 @@ export default function TermsConditions() {
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(255,215,0,0.06) 0%, transparent 65%)" }} />
           <div style={{ position: "relative", zIndex: 2, padding: "0 5%", maxWidth: "760px" }}>
             <div className="badge mb-4">LEGAL PORTAL</div>
-            <h1 style={{ fontFamily: "var(--font-h)", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, color: "#fff", lineHeight: 1.2, textShadow: "0 2px 25px rgba(0,0,0,0.7)" }} className="uppercase text-white">
-              Terms &amp; <span className="g">Conditions</span>
+            <h1 style={{ fontFamily: "var(--font-h)", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, lineHeight: 1.2 }} className="uppercase text-white">
+              <span style={{ textShadow: "0 2px 25px rgba(0,0,0,0.7)" }}>Terms &amp;</span> <br />
+              <span className="g" style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.5))" }}>Conditions</span>
             </h1>
-            <p style={{ color: "rgba(234,234,234,0.85)", maxWidth: "650px", margin: "12px auto 0", fontSize: "14px", lineHeight: 1.6, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
+            <p style={{ color: "rgba(234,234,234,0.85)", maxWidth: "650px", margin: "18px auto 0", fontSize: "14px", lineHeight: 1.6, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
               Effective Date: May 22, 2026. Fully updated to define neutral marketplace intermediary protocols, P2P escrow safeguards, voluntary F2F guidelines, and comprehensive risk disclosures under Indian laws.
             </p>
           </div>
@@ -204,16 +205,18 @@ export default function TermsConditions() {
                 top: "120px",
                 maxHeight: "calc(100vh - 160px)",
                 overflowY: "auto",
-                background: "#131722",
+                background: "rgba(14, 17, 24, 0.65)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
                 border: "1px solid var(--color-border-gold)",
                 borderRadius: "20px",
                 padding: "24px 20px",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
+                boxShadow: "0 15px 35px rgba(0,0,0,0.4)"
               }}>
                 <h4 style={{
                   fontFamily: "var(--font-h)",
                   fontSize: "13px",
-                  fontWeight: 700,
+                  fontWeight: 900,
                   color: "#fff",
                   textTransform: "uppercase",
                   letterSpacing: "1px",
@@ -287,7 +290,7 @@ export default function TermsConditions() {
               >
                 <AlertTriangle size={24} style={{ color: "var(--color-orange)", flexShrink: 0, marginTop: "2px" }} />
                 <div>
-                  <h4 style={{ color: "var(--color-gold)", fontWeight: 700, fontSize: "14px", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Important Intermediary Notice</h4>
+                  <h4 style={{ color: "var(--color-gold)", fontWeight: 800, fontSize: "14px", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: "var(--font-h)" }}>Important Intermediary Notice</h4>
                   <p style={{ color: "var(--color-muted)", fontSize: "13px", lineHeight: 1.5 }}>
                     Maddy BGMI Store operates purely as an intermediary listing broker and escrow platform. By buying, selling, or exchanging assets on our digital channels, you confirm that you have read, understood, and agreed to be bound by all our rules, risk disclaimers, and game publisher policies.
                   </p>
@@ -310,11 +313,11 @@ export default function TermsConditions() {
                         width: "38px", 
                         height: "38px", 
                         borderRadius: "10px", 
-                        background: "rgba(255, 255, 255, 0.03)", 
+                        background: "rgba(255, 215, 0, 0.05)", 
                         display: "flex", 
                         alignItems: "center", 
                         justifyContent: "center",
-                        border: "1px solid rgba(255, 255, 255, 0.06)",
+                        border: "1px solid rgba(255, 215, 0, 0.2)",
                         flexShrink: 0
                       }}
                     >
@@ -324,7 +327,7 @@ export default function TermsConditions() {
                       style={{ 
                         fontFamily: "var(--font-h)", 
                         fontSize: "19px", 
-                        fontWeight: 700, 
+                        fontWeight: 900, 
                         color: "#fff",
                         letterSpacing: "0.5px"
                       }}
@@ -356,7 +359,6 @@ export default function TermsConditions() {
               <div style={{ textAlign: "center", marginTop: "20px" }}>
                 <a 
                   href="/" 
-                  className="btn btn-gold" 
                   style={{ 
                     display: "inline-flex", 
                     alignItems: "center", 
@@ -364,7 +366,11 @@ export default function TermsConditions() {
                     padding: "12px 30px", 
                     fontSize: "14px",
                     borderRadius: "30px",
-                    textDecoration: "none"
+                    textDecoration: "none",
+                    background: "linear-gradient(to right, var(--color-gold), #ff8c00)",
+                    color: "#000",
+                    fontWeight: 700,
+                    boxShadow: "0 4px 20px rgba(255, 215, 0, 0.25)"
                   }}
                 >
                   Go Back to Store Home <ChevronRight size={16} />

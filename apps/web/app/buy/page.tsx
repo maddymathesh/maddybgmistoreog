@@ -794,7 +794,7 @@ export default function Buy() {
                 </div>
 
                 <div className="flex justify-end">
-                  <Link href="/terms" className="btn btn-gold text-xs tracking-wider px-6 py-3">
+                  <Link href="/guides/booking-system" className="btn btn-gold text-xs tracking-wider px-6 py-3">
                     FULL BOOKING SYSTEM PAGE →
                   </Link>
                 </div>
@@ -908,7 +908,7 @@ export default function Buy() {
                 </div>
 
                 <div className="flex justify-end">
-                  <Link href="/terms" className="btn text-xs tracking-wider px-6 py-3" style={{ background: "linear-gradient(135deg, #f97316, #ea580c)", color: "#fff", border: "none" }}>
+                  <Link href="/guides/f2f-deal" className="btn text-xs tracking-wider px-6 py-3" style={{ background: "linear-gradient(135deg, #f97316, #ea580c)", color: "#fff", border: "none" }}>
                     FULL F2F DEAL SYSTEM PAGE →
                   </Link>
                 </div>
@@ -998,7 +998,7 @@ export default function Buy() {
                 </div>
 
                 <div className="flex justify-end">
-                  <Link href="/terms" className="btn text-xs tracking-wider px-6 py-3" style={{ background: "linear-gradient(135deg, #a855f7, #7e22ce)", color: "#fff", border: "none" }}>
+                  <Link href="/guides/escrow-deal" className="btn text-xs tracking-wider px-6 py-3" style={{ background: "linear-gradient(135deg, #a855f7, #7e22ce)", color: "#fff", border: "none" }}>
                     FULL ESCROW SYSTEM PAGE →
                   </Link>
                 </div>

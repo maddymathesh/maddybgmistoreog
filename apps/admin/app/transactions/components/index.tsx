@@ -77,9 +77,12 @@ export default function TransactionsLayout() {
     );
   }
 
-  const isPermanentAdmin = user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com";
+  const isPermanentAdmin = 
+    user?.primaryEmailAddress?.emailAddress === "contact@maddybgmistore.in" ||
+    user?.primaryEmailAddress?.emailAddress === "maddybgmistoreog@gmail.com" ||
+    user?.primaryEmailAddress?.emailAddress === "r.mateshwaran.io@gmail.com";
   const userRole = String((user?.publicMetadata as Record<string, unknown> | undefined)?.role || "USER");
-  const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER", "CONTENT_MANAGER"].includes(userRole);
+  const isAdmin = isPermanentAdmin || ["SUPER_ADMIN", "ADMIN", "TRANSACTION_MANAGER"].includes(userRole);
 
   if (!isAdmin) {
     return (

@@ -35,7 +35,7 @@ async function verifyAdminAccess() {
       
     console.log(`[Admin Access Check] User: ${userId}, Email: ${userEmail}, Role: ${userRole}`);
       
-    if (userEmail === "r.mateshwaran.io@gmail.com" || userEmail === "maddybgmistoreog@gmail.com") {
+    if (userEmail === "r.mateshwaran.io@gmail.com" || userEmail === "contact@maddybgmistore.in" || userEmail === "maddybgmistoreog@gmail.com") {
       isPermanentAdmin = true;
     }
   } catch (error) {
@@ -618,7 +618,7 @@ export async function getActiveAdmins() {
       const role = u.publicMetadata?.role as string | undefined;
       const email = u.emailAddresses[0]?.emailAddress;
       return (role === "SUPER_ADMIN" || role === "ADMIN" || role === "TRANSACTION_MANAGER" || role === "CONTENT_MANAGER") || 
-             email === "maddybgmistoreog@gmail.com" || email === "r.mateshwaran.io@gmail.com";
+             email === "contact@maddybgmistore.in" || email === "maddybgmistoreog@gmail.com" || email === "r.mateshwaran.io@gmail.com";
     }).map(u => ({
       id: u.id,
       email: u.emailAddresses[0]?.emailAddress || "Unknown",
@@ -674,7 +674,7 @@ export async function revokeAdmin(userId: string) {
     const targetUser = await client.users.getUser(userId);
     const email = targetUser.emailAddresses[0]?.emailAddress || "Unknown";
 
-    if (email === "maddybgmistoreog@gmail.com" || email === "r.mateshwaran.io@gmail.com") {
+    if (email === "contact@maddybgmistore.in" || email === "maddybgmistoreog@gmail.com" || email === "r.mateshwaran.io@gmail.com") {
       return { success: false, error: "Cannot revoke permanent owner access." };
     }
     
